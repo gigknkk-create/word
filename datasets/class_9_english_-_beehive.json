@@ -1,0 +1,140 @@
+{
+  "book_title": "Class 9 English - Beehive",
+  "class_level": 9,
+  "total_pages": 296,
+  "last_updated": "2026-10-29 14:46:54",
+  "pages": {
+    "10": [
+      {
+        "word": "Illustrations",
+        "category": "Medium",
+        "pronunciation": "/ˌɪl.əˈstreɪ.ʃənz/",
+        "pronunciation_hindi": "इलस्ट्रेशनज़",
+        "pos": "Noun",
+        "english_meaning": "Pictures, drawings, or diagrams in a book used to explain or decorate text",
+        "hindi_meaning": "चित्र या दृष्टांत",
+        "example": "The illustrations in the storybook helped the young children understand the story easily.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Depict",
+        "category": "Hard",
+        "pronunciation": "/dɪˈpɪkt/",
+        "pronunciation_hindi": "डिपेक्ट",
+        "pos": "Verb",
+        "english_meaning": "To represent or show something through a drawing, painting, or words",
+        "hindi_meaning": "दर्शाना या चित्रण करना",
+        "example": "The painting depicts a peaceful village scene at sunset.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Context",
+        "category": "Hard",
+        "pronunciation": "/ˈkɒn.tekst/",
+        "pronunciation_hindi": "कॉन्टेक्स्ट",
+        "pos": "Noun",
+        "english_meaning": "The situation or background circumstances in which something happens or is written",
+        "hindi_meaning": "संदर्भ या प्रसंग",
+        "example": "You must understand the historical context of the poem to fully appreciate its meaning.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Enhance",
+        "category": "Medium",
+        "pronunciation": "/ɪnˈhɑːns/",
+        "pronunciation_hindi": "इन्हैंस",
+        "pos": "Verb",
+        "english_meaning": "To improve the quality, amount, or strength of something",
+        "hindi_meaning": "बढ़ाना या सुधारना",
+        "example": "Adding colorful charts can enhance the clarity of your presentation.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Comprehension",
+        "category": "Hard",
+        "pronunciation": "/ˌkɒm.prɪˈhen.ʃən/",
+        "pronunciation_hindi": "कॉम्प्रेहेंशन",
+        "pos": "Noun",
+        "english_meaning": "The ability to understand something completely",
+        "hindi_meaning": "समझ या बोध",
+        "example": "Reading regularly improves your reading comprehension and vocabulary.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Encouraged",
+        "category": "Medium",
+        "pronunciation": "/ɪnˈkʌr.ɪdʒd/",
+        "pronunciation_hindi": "एनकरेज्ड",
+        "pos": "Verb",
+        "english_meaning": "Gave support, confidence, or hope to someone to do something",
+        "hindi_meaning": "प्रोत्साहित किया",
+        "example": "The teacher encouraged the students to ask questions whenever they had doubts.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Reflect",
+        "category": "Medium",
+        "pronunciation": "/rɪˈflekt/",
+        "pronunciation_hindi": "रिफ्लेक्ट",
+        "pos": "Verb",
+        "english_meaning": "To think deeply or carefully about something",
+        "hindi_meaning": "विचार करना या चिंतन करना",
+        "example": "After reading the moral story, students were asked to reflect on their own behavior.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Sincerely",
+        "category": "Medium",
+        "pronunciation": "/sɪnˈsɪə.li/",
+        "pronunciation_hindi": "सिनसियरली",
+        "pos": "Adverb",
+        "english_meaning": "In a genuine, honest, and heartfelt manner",
+        "hindi_meaning": "ईमानदारी से या निष्ठापूर्वक",
+        "example": "She apologized sincerely for arriving late to the class.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Competencies",
+        "category": "Hard",
+        "pronunciation": "/ˈkɒm.pɪ.tən.siːz/",
+        "pronunciation_hindi": "कॉम्पिटेंसीज़",
+        "pos": "Noun",
+        "english_meaning": "The abilities, skills, or knowledge required to do something successfully",
+        "hindi_meaning": "दक्षताएं या क्षमताएं",
+        "example": "The new curriculum focuses on developing practical language competencies in students.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      },
+      {
+        "word": "Academic",
+        "category": "Medium",
+        "pronunciation": "/ˌæk.əˈdem.ɪk/",
+        "pronunciation_hindi": "अकैडमिक",
+        "pos": "Adjective",
+        "english_meaning": "Relating to education, schools, colleges, or study",
+        "hindi_meaning": "शैक्षणिक",
+        "example": "The school awards prizes every year to students with outstanding academic achievements.",
+        "page_number": 10,
+        "book": "Class 9 English - Beehive",
+        "class": 9
+      }
+    ]
+  }
+}

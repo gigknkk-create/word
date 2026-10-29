@@ -1,0 +1,78 @@
+name: NCERT History Vocab Cloud Generator
+
+on:
+  workflow_dispatch:
+    inputs:
+      book_choice:
+        description: 'Select History Book to Generate'
+        required: true
+        type: choice
+        default: 'Class_09_History_India_and_Contemporary_World_I'
+        options:
+          - 'Class_08_History_Our_Pasts_III'
+          - 'Class_09_History_India_and_Contemporary_World_I'
+          - 'Class_10_History_India_and_Contemporary_World_II'
+          - 'Class_11_History_Themes_in_World_History'
+          - 'Class_12_History_Themes_in_Indian_History_Part_1'
+          - 'Class_12_History_Themes_in_Indian_History_Part_2'
+          - 'Class_12_History_Themes_in_Indian_History_Part_3'
+      words_per_page:
+        description: 'Target Words Per Page'
+        required: true
+        default: '10'
+      start_page:
+        description: 'Start Page Number'
+        required: true
+        default: '1'
+      end_page:
+        description: 'End Page Number (0 for All Pages in Book)'
+        required: true
+        default: '0'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pymupdf requests
+
+      - name: Run History Vocabulary Generator
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python scripts/generate_vocab.py \
+            --pdf "books/${{ github.event.inputs.book_choice }}.pdf" \
+            --book-title "${{ github.event.inputs.book_choice }}" \
+            --words-per-page ${{ github.event.inputs.words_per_page }} \
+            --start-page ${{ github.event.inputs.start_page }} \
+            --end-page ${{ github.event.inputs.end_page }} \
+            --delay 4.0 \
+            --output-dir datasets
+
+      - name: Commit and Push Generated Datasets
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add datasets/
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "feat(vocab): update history vocabulary dataset [skip ci]"
+            git push origin HEAD
+          fi
