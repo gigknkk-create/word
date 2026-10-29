@@ -9,6 +9,7 @@ on:
         type: choice
         default: 'Class_09_History_India_and_Contemporary_World_I'
         options:
+          - 'Class_07_History_Our_Pasts_II'
           - 'Class_08_History_Our_Pasts_III'
           - 'Class_09_History_India_and_Contemporary_World_I'
           - 'Class_10_History_India_and_Contemporary_World_II'
