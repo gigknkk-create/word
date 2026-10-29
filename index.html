@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NCERT Class 8 History — Interactive Vocab Studio & PDF Reader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- PDF.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- Pre-bundled Class 8 Dataset (Zero CORS fallback) -->
+  <script src="datasets/class_08_data.js"></script>
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-panel: #111827;
+      --bg-card: #1f2937;
+      --bg-card-hover: #283548;
+      --border: #374151;
+      --border-focus: #6366f1;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-hindi: #fbbf24;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: rgba(99, 102, 241, 0.15);
+      --accent: #06b6d4;
+      --tag-medium-bg: rgba(245, 158, 11, 0.15);
+      --tag-medium-text: #fbbf24;
+      --tag-medium-border: rgba(245, 158, 11, 0.35);
+      --tag-hard-bg: rgba(239, 68, 68, 0.15);
+      --tag-hard-text: #f87171;
+      --tag-hard-border: rgba(239, 68, 68, 0.35);
+      --pos-bg: rgba(99, 102, 241, 0.15);
+      --pos-text: #a5b4fc;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 260px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.4);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-badge {
+      font-size: 10px;
+      padding: 2px 7px;
+      background: var(--primary-light);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Central Navigation Controls */
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 4px 8px;
+    }
+
+    .btn-nav {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .btn-nav:hover:not(:disabled) {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .page-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 0 4px;
+    }
+
+    .page-input {
+      width: 48px;
+      height: 30px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 14px;
+      text-align: center;
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .page-input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    }
+
+    .btn-go {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-go:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Chapter Indicator */
+    .chapter-pill {
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(6, 182, 212, 0.12);
+      color: #67e8f9;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 280px;
+    }
+
+    /* Right Action Bar */
+    .actions-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-input {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 6px 12px 6px 32px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      width: 170px;
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    .search-input:focus {
+      width: 240px;
+      border-color: var(--border-focus);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .btn-icon {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all 0.15s;
+    }
+
+    .btn-icon:hover {
+      border-color: var(--border-focus);
+      color: #fff;
+      background: var(--bg-card-hover);
+    }
+
+    .btn-icon.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* Main Container (Split Panes) */
+    main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-main);
+    }
+
+    /* Horizontal Split (Side-by-Side) */
+    main.split-horizontal {
+      flex-direction: row;
+    }
+
+    /* Vertical Split (Stacked Top-Bottom) */
+    main.split-vertical {
+      flex-direction: column;
+    }
+
+    /* Pane 1: PDF Viewer */
+    .pdf-pane {
+      flex: 1;
+      min-width: 320px;
+      min-height: 250px;
+      background: #0f1422;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    main.split-vertical .pdf-pane {
+      border-right: none;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .pdf-toolbar {
+      background: var(--bg-panel);
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pdf-toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-zoom {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .btn-zoom:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .pdf-viewport {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+    }
+
+    #pdf-canvas {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      border-radius: 4px;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      background: #fff;
+    }
+
+    .pdf-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(99, 102, 241, 0.2);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Pane 2: Vocabulary Studio */
+    .vocab-pane {
+      flex: 1;
+      min-width: 340px;
+      min-height: 250px;
+      background: var(--bg-panel);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .vocab-header {
+      padding: 12px 18px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .vocab-stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .vocab-count-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-pill:hover {
+      color: #fff;
+      border-color: var(--text-muted);
+    }
+
+    .filter-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .vocab-view-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 2px;
+    }
+
+    .btn-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-tab.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .vocab-scrollable {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Word Card Styling */
+    .word-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .word-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(99, 102, 241, 0.5);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .word-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .word-title-group {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .word-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    .pos-pill {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--pos-bg);
+      color: var(--pos-text);
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: capitalize;
+    }
+
+    .category-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .category-badge.Medium {
+      background: var(--tag-medium-bg);
+      color: var(--tag-medium-text);
+      border: 1px solid var(--tag-medium-border);
+    }
+
+    .category-badge.Hard {
+      background: var(--tag-hard-bg);
+      color: var(--tag-hard-text);
+      border: 1px solid var(--tag-hard-border);
+    }
+
+    /* Pronunciation & Audio */
+    .pronunciation-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .ipa {
+      font-family: 'JetBrains Mono', monospace;
+      color: #93c5fd;
+      background: rgba(147, 197, 253, 0.1);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .pron-hindi {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      color: #fde047;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .btn-speak {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      border-radius: 16px;
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+
+    .btn-speak:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Meanings */
+    .meaning-box {
+      background: rgba(11, 15, 25, 0.5);
+      border-left: 3px solid #f59e0b;
+      padding: 8px 12px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hindi-meaning {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fbbf24;
+      line-height: 1.4;
+    }
+
+    .english-meaning {
+      font-size: 13.5px;
+      color: #e5e7eb;
+      line-height: 1.45;
+    }
+
+    /* Example sentence */
+    .example-box {
+      font-size: 13px;
+      color: #94a3b8;
+      font-style: italic;
+      line-height: 1.4;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .example-box strong {
+      color: #38bdf8;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* Raw JSON Viewer */
+    #json-container {
+      display: none;
+      flex: 1;
+      overflow: auto;
+      background: #0d1117;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      position: relative;
+    }
+
+    #json-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: #58a6ff;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .btn-copy-json {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-copy-json:hover {
+      background: var(--primary);
+    }
+
+    /* Search Results Drawer / Dropdown */
+    .search-results {
+      position: absolute;
+      top: 58px;
+      right: 18px;
+      width: 320px;
+      max-height: 420px;
+      overflow-y: auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-focus);
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      display: none;
+    }
+
+    .search-result-item {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: background 0.15s;
+    }
+
+    .search-result-item:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .search-result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .search-word {
+      font-weight: 700;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .search-page {
+      font-size: 11px;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.2);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .search-hindi {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      font-size: 12px;
+      color: #fbbf24;
+    }
+
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+      gap: 12px;
+      color: var(--text-muted);
+    }
+
+    .empty-icon {
+      font-size: 44px;
+      opacity: 0.5;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #10b981;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 200;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      header {
+        flex-wrap: wrap;
+        padding: 8px 12px;
+      }
+      .chapter-pill {
+        display: none;
+      }
+      main.split-horizontal {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="brand-section">
+      <div class="brand-icon">📚</div>
+      <div>
+        <div class="brand-title">
+          NCERT VocabStudio
+          <span class="brand-badge">Class 8 History</span>
+        </div>
+        <div class="brand-subtitle">Our Pasts - III • Interactive Study Hub</div>
+      </div>
+    </div>
+
+    <!-- Page Flip & Navigation -->
+    <div class="nav-controls">
+      <button class="btn-nav" id="btn-first" title="First Page">⏮</button>
+      <button class="btn-nav" id="btn-prev" title="Previous Page">◀ Prev</button>
+      
+      <div class="page-input-wrapper">
+        <span>Page</span>
+        <input type="number" id="page-input" class="page-input" min="1" max="124" value="1">
+        <span>of <strong id="total-pages-label">124</strong></span>
+      </div>
+
+      <button class="btn-go" id="btn-go">Go</button>
+      <button class="btn-nav" id="btn-next" title="Next Page">Next ▶</button>
+      <button class="btn-nav" id="btn-last" title="Last Page">⏭</button>
+    </div>
+
+    <!-- Current Chapter Indicator -->
+    <div class="chapter-pill" id="chapter-label">
+      📖 Prelims & Introduction
+    </div>
+
+    <!-- Action Bar & Controls -->
+    <div class="actions-bar">
+      <!-- Search -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" class="search-input" placeholder="Search words or Hindi...">
+      </div>
+
+      <!-- Layout Toggle: Side-by-Side vs Vertical Stack -->
+      <button class="btn-icon" id="btn-toggle-layout" title="Toggle Layout: Side-by-Side / Vertical Stack">
+        ⬌
+      </button>
+
+      <!-- View JSON Dataset -->
+      <button class="btn-icon" id="btn-download-json" title="Download Full Class 8 JSON Dataset">
+        📥
+      </button>
+    </div>
+  </header>
+
+  <!-- Search Results Dropdown -->
+  <div class="search-results" id="search-results"></div>
+
+  <!-- Main Split Panes -->
+  <main id="main-layout" class="split-horizontal">
+
+    <!-- Pane 1: Synchronized PDF Viewer -->
+    <section class="pdf-pane">
+      <div class="pdf-toolbar">
+        <div class="pdf-toolbar-group">
+          <strong>Textbook View</strong>
+          <span id="pdf-page-indicator">(Rendering Page 1...)</span>
+        </div>
+        <div class="pdf-toolbar-group">
+          <button class="btn-zoom" id="btn-zoom-out" title="Zoom Out">−</button>
+          <span id="zoom-label" style="font-weight:700; min-width: 40px; text-align: center;">100%</span>
+          <button class="btn-zoom" id="btn-zoom-in" title="Zoom In">+</button>
+          <button class="btn-zoom" id="btn-fit-width" title="Fit to Pane Width">Fit Width</button>
+        </div>
+      </div>
+
+      <div class="pdf-viewport" id="pdf-viewport">
+        <canvas id="pdf-canvas"></canvas>
+        <div class="pdf-loading" id="pdf-loading">
+          <div class="spinner"></div>
+          <div>Loading NCERT PDF...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pane 2: Vocabulary Studio -->
+    <section class="vocab-pane">
+      <div class="vocab-header">
+        <div class="vocab-stats">
+          <div class="vocab-count-badge">
+            <span>📝</span>
+            <span id="words-count-label">10 Words</span>
+          </div>
+
+          <!-- Category Filters -->
+          <div class="filter-pills">
+            <button class="filter-pill active" data-filter="all" id="pill-all">All (10)</button>
+            <button class="filter-pill" data-filter="Medium" id="pill-medium">Medium</button>
+            <button class="filter-pill" data-filter="Hard" id="pill-hard">Hard</button>
+          </div>
+        </div>
+
+        <!-- View Switch: Cards vs JSON -->
+        <div class="vocab-view-tabs">
+          <button class="btn-tab active" id="tab-cards">Cards</button>
+          <button class="btn-tab" id="tab-json">JSON</button>
+        </div>
+      </div>
+
+      <!-- Cards Container -->
+      <div class="vocab-scrollable" id="cards-container">
+        <!-- Dynamically injected word cards -->
+      </div>
+
+      <!-- JSON Viewer Container -->
+      <div id="json-container">
+        <button class="btn-copy-json" id="btn-copy-json">📋 Copy JSON</button>
+        <pre><code id="json-code"></code></pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <script>
+    // Chapter ranges for Class 8 History: Our Pasts - III
+    const CHAPTERS = [
+      { start: 1, end: 12, title: "Prelims & Contents" },
+      { start: 13, end: 20, title: "Chapter 1: How, When and Where" },
+      { start: 21, end: 37, title: "Chapter 2: From Trade to Territory" },
+      { start: 38, end: 50, title: "Chapter 3: Ruling the Countryside" },
+      { start: 51, end: 62, title: "Chapter 4: Tribals, Dikus and Golden Age" },
+      { start: 63, end: 76, title: "Chapter 5: When People Rebel (1857)" },
+      { start: 77, end: 89, title: "Chapter 6: Civilising the Native, Educating Nation" },
+      { start: 90, end: 104, title: "Chapter 7: Women, Caste and Reform" },
+      { start: 105, end: 124, title: "Chapter 8: The Making of National Movement" }
+    ];
+
+    // State
+    let currentPage = 1;
+    let totalPages = 124;
+    let currentFilter = 'all';
+    let currentZoom = 1.0;
+    let isVerticalLayout = false;
+    let activeTab = 'cards';
+    let dataset = null;
+    let pdfDoc = null;
+    let isRendering = false;
+    let renderPendingPage = null;
+
+    // Elements
+    const pageInput = document.getElementById('page-input');
+    const totalPagesLabel = document.getElementById('total-pages-label');
+    const chapterLabel = document.getElementById('chapter-label');
+    const cardsContainer = document.getElementById('cards-container');
+    const jsonContainer = document.getElementById('json-container');
+    const jsonCode = document.getElementById('json-code');
+    const wordsCountLabel = document.getElementById('words-count-label');
+    const pdfCanvas = document.getElementById('pdf-canvas');
+    const pdfLoading = document.getElementById('pdf-loading');
+    const pdfPageIndicator = document.getElementById('pdf-page-indicator');
+    const zoomLabel = document.getElementById('zoom-label');
+    const mainLayout = document.getElementById('main-layout');
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    const toast = document.getElementById('toast');
+
+    // Filter Buttons
+    const pillAll = document.getElementById('pill-all');
+    const pillMedium = document.getElementById('pill-medium');
+    const pillHard = document.getElementById('pill-hard');
+
+    // 1. Initialize Dataset
+    async function initDataset() {
+      if (window.CLASS_08_DATA && window.CLASS_08_DATA.pages) {
+        dataset = window.CLASS_08_DATA;
+        console.log("Loaded dataset from pre-bundled window.CLASS_08_DATA");
+      } else {
+        try {
+          const resp = await fetch('./datasets/class_08_history_our_pasts_iii.json');
+          dataset = await resp.json();
+          console.log("Loaded dataset from fetch");
+        } catch (err) {
+          console.error("Failed to fetch dataset:", err);
+        }
+      }
+
+      if (dataset && dataset.total_pages) {
+        totalPages = dataset.total_pages;
+        totalPagesLabel.textContent = totalPages;
+        pageInput.max = totalPages;
+      }
+      updateUI();
+    }
+
+    // 2. Initialize PDF.js
+    async function initPDF() {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const pdfUrl = './books/Class_08_History_Our_Pasts_III.pdf';
+
+      try {
+        const loadingTask = pdfjsLib.getDocument(pdfUrl);
+        pdfDoc = await loadingTask.promise;
+        totalPages = pdfDoc.numPages;
+        totalPagesLabel.textContent = totalPages;
+        pageInput.max = totalPages;
+        pdfLoading.style.display = 'none';
+        renderPDFPage(currentPage);
+      } catch (err) {
+        console.warn("Could not load PDF directly via URL:", err);
+        pdfLoading.innerHTML = `
+          <div style="text-align:center; padding: 20px;">
+            <div style="font-size:28px; margin-bottom:8px;">📖</div>
+            <div style="font-weight:700; color:#fff; margin-bottom:6px;">Textbook PDF Ready</div>
+            <div style="font-size:12px; margin-bottom:12px;">Class_08_History_Our_Pasts_III.pdf (124 Pages)</div>
+            <a href="./books/Class_08_History_Our_Pasts_III.pdf" target="_blank" class="btn-go" style="text-decoration:none; display:inline-block; padding: 8px 14px;">
+              Open Full PDF in New Tab ↗
+            </a>
+          </div>
+        `;
+      }
+    }
+
+    // 3. Render PDF Page on Canvas
+    async function renderPDFPage(pageNum) {
+      if (!pdfDoc) return;
+      if (isRendering) {
+        renderPendingPage = pageNum;
+        return;
+      }
+
+      isRendering = true;
+      pdfPageIndicator.textContent = `(Page ${pageNum} of ${totalPages})`;
+
+      try {
+        const page = await pdfDoc.getPage(pageNum);
+        const viewport = page.getViewport({ scale: currentZoom * 1.5 });
+        const canvas = pdfCanvas;
+        const ctx = canvas.getContext('2d');
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+
+        await page.render(renderContext).promise;
+      } catch (e) {
+        console.error("Error rendering PDF page:", e);
+      } finally {
+        isRendering = false;
+        if (renderPendingPage !== null) {
+          const next = renderPendingPage;
+          renderPendingPage = null;
+          renderPDFPage(next);
+        }
+      }
+    }
+
+    // 4. Update UI for Current Page
+    function updateUI() {
+      pageInput.value = currentPage;
+
+      // Update Chapter Label
+      const ch = CHAPTERS.find(c => currentPage >= c.start && currentPage <= c.end);
+      chapterLabel.textContent = ch ? `📖 ${ch.title}` : `Class 8 History (Page ${currentPage})`;
+
+      // Update Navigation Buttons
+      document.getElementById('btn-prev').disabled = (currentPage <= 1);
+      document.getElementById('btn-first').disabled = (currentPage <= 1);
+      document.getElementById('btn-next').disabled = (currentPage >= totalPages);
+      document.getElementById('btn-last').disabled = (currentPage >= totalPages);
+
+      // Render Words
+      renderVocabWords();
+
+      // Render PDF Page
+      renderPDFPage(currentPage);
+    }
+
+    // 5. Render Vocabulary Words
+    function renderVocabWords() {
+      if (!dataset || !dataset.pages) {
+        cardsContainer.innerHTML = `<div class="empty-state"><div class="spinner"></div><div>Loading dataset...</div></div>`;
+        return;
+      }
+
+      const pageStr = String(currentPage);
+      const words = dataset.pages[pageStr] || [];
+
+      // Filter words
+      const filteredWords = words.filter(w => {
+        if (currentFilter === 'all') return true;
+        return (w.category || '').toLowerCase() === currentFilter.toLowerCase();
+      });
+
+      // Update Header counts
+      const medCount = words.filter(w => (w.category || '').toLowerCase() === 'medium').length;
+      const hardCount = words.filter(w => (w.category || '').toLowerCase() === 'hard').length;
+      
+      wordsCountLabel.textContent = `${words.length} Words on Page ${currentPage}`;
+      pillAll.textContent = `All (${words.length})`;
+      pillMedium.textContent = `Medium (${medCount})`;
+      pillHard.textContent = `Hard (${hardCount})`;
+
+      // Update JSON View
+      jsonCode.textContent = JSON.stringify(words, null, 2);
+
+      if (filteredWords.length === 0) {
+        cardsContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📄</div>
+            <div style="font-weight:700; font-size:16px; color:#fff;">No words extracted for this filter</div>
+            <div style="font-size:13px;">This page might be an illustration, map, or title page without text layer.</div>
+          </div>
+        `;
+        return;
+      }
+
+      // Generate Cards HTML
+      cardsContainer.innerHTML = filteredWords.map((w, idx) => {
+        const cat = w.category || 'Medium';
+        const pos = w.pos || 'Word';
+        const ipa = w.pronunciation || '';
+        const hindiPron = w.pronunciation_hindi || '';
+        const hindiMeaning = w.hindi_meaning || '';
+        const engMeaning = w.english_meaning || '';
+        const example = w.example || '';
+
+        // Highlight the word in the example sentence
+        let highlightedExample = example;
+        if (w.word && example) {
+          const reg = new RegExp(`\\b(${w.word})\\b`, 'gi');
+          highlightedExample = example.replace(reg, '<strong>$1</strong>');
+        }
+
+        return `
+          <div class="word-card">
+            <div class="word-card-top">
+              <div class="word-title-group">
+                <span class="word-title">${idx + 1}. ${escapeHtml(w.word)}</span>
+                <span class="pos-pill">${escapeHtml(pos)}</span>
+              </div>
+              <span class="category-badge ${cat}">${cat}</span>
+            </div>
+
+            <div class="pronunciation-row">
+              ${ipa ? `<span class="ipa">${escapeHtml(ipa)}</span>` : ''}
+              ${hindiPron ? `<span class="pron-hindi">${escapeHtml(hindiPron)}</span>` : ''}
+              <button class="btn-speak" onclick="speakWord('${escapeJs(w.word)}')">
+                🔊 Listen
+              </button>
+            </div>
+
+            <div class="meaning-box">
+              <div class="hindi-meaning">${escapeHtml(hindiMeaning)}</div>
+              <div class="english-meaning">${escapeHtml(engMeaning)}</div>
+            </div>
+
+            ${example ? `
+              <div class="example-box">
+                "${highlightedExample}"
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Helper functions
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function escapeJs(text) {
+      if (!text) return '';
+      return String(text).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    }
+
+    // Text-to-speech
+    window.speakWord = function(word) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(word);
+        utter.lang = 'en-US';
+        utter.rate = 0.9;
+        window.speechSynthesis.speak(utter);
+      }
+    };
+
+    // Page Navigation Handlers
+    function goToPage(p) {
+      const target = Math.max(1, Math.min(totalPages, parseInt(p) || 1));
+      currentPage = target;
+      updateUI();
+    }
+
+    document.getElementById('btn-prev').addEventListener('click', () => goToPage(currentPage - 1));
+    document.getElementById('btn-next').addEventListener('click', () => goToPage(currentPage + 1));
+    document.getElementById('btn-first').addEventListener('click', () => goToPage(1));
+    document.getElementById('btn-last').addEventListener('click', () => goToPage(totalPages));
+    document.getElementById('btn-go').addEventListener('click', () => goToPage(pageInput.value));
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') goToPage(pageInput.value);
+    });
+
+    // Keyboard Arrow Keys
+    window.addEventListener('keydown', (e) => {
+      if (document.activeElement.tagName === 'INPUT') return;
+      if (e.key === 'ArrowLeft') goToPage(currentPage - 1);
+      if (e.key === 'ArrowRight') goToPage(currentPage + 1);
+    });
+
+    // Zoom Controls
+    document.getElementById('btn-zoom-in').addEventListener('click', () => {
+      currentZoom = Math.min(2.5, currentZoom + 0.2);
+      zoomLabel.textContent = `${Math.round(currentZoom * 100)}%`;
+      renderPDFPage(currentPage);
+    });
+
+    document.getElementById('btn-zoom-out').addEventListener('click', () => {
+      currentZoom = Math.max(0.6, currentZoom - 0.2);
+      zoomLabel.textContent = `${Math.round(currentZoom * 100)}%`;
+      renderPDFPage(currentPage);
+    });
+
+    document.getElementById('btn-fit-width').addEventListener('click', () => {
+      currentZoom = 1.0;
+      zoomLabel.textContent = `100%`;
+      renderPDFPage(currentPage);
+    });
+
+    // Filter Pills
+    [pillAll, pillMedium, pillHard].forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderVocabWords();
+      });
+    });
+
+    // Layout Toggle (Horizontal Side-by-Side vs Vertical Stack)
+    const btnToggleLayout = document.getElementById('btn-toggle-layout');
+    btnToggleLayout.addEventListener('click', () => {
+      isVerticalLayout = !isVerticalLayout;
+      if (isVerticalLayout) {
+        mainLayout.className = 'split-vertical';
+        btnToggleLayout.textContent = '⬍';
+        btnToggleLayout.title = 'Switch to Side-by-Side Horizontal';
+      } else {
+        mainLayout.className = 'split-horizontal';
+        btnToggleLayout.textContent = '⬌';
+        btnToggleLayout.title = 'Switch to Stacked Vertical';
+      }
+      setTimeout(() => renderPDFPage(currentPage), 200);
+    });
+
+    // Cards vs JSON View Tab
+    const tabCards = document.getElementById('tab-cards');
+    const tabJson = document.getElementById('tab-json');
+    tabCards.addEventListener('click', () => {
+      tabCards.classList.add('active');
+      tabJson.classList.remove('active');
+      cardsContainer.style.display = 'flex';
+      jsonContainer.style.display = 'none';
+      activeTab = 'cards';
+    });
+    tabJson.addEventListener('click', () => {
+      tabJson.classList.add('active');
+      tabCards.classList.remove('active');
+      cardsContainer.style.display = 'none';
+      jsonContainer.style.display = 'block';
+      activeTab = 'json';
+    });
+
+    // Copy JSON to Clipboard
+    document.getElementById('btn-copy-json').addEventListener('click', () => {
+      navigator.clipboard.writeText(jsonCode.textContent).then(() => {
+        showToast("Page JSON copied to clipboard!");
+      });
+    });
+
+    // Download Full Dataset JSON
+    document.getElementById('btn-download-json').addEventListener('click', () => {
+      if (!dataset) return;
+      const blob = new Blob([JSON.stringify(dataset, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'NCERT_Class_08_History_Vocabulary.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("Downloading full Class 8 JSON dataset...");
+    });
+
+    // Toast function
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2200);
+    }
+
+    // Global Word Search Across Entire Book
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      if (!q || !dataset || !dataset.pages) {
+        searchResults.style.display = 'none';
+        return;
+      }
+
+      const results = [];
+      for (const [page, words] of Object.entries(dataset.pages)) {
+        if (!Array.isArray(words)) continue;
+        for (const w of words) {
+          if ((w.word && w.word.toLowerCase().includes(q)) ||
+              (w.hindi_meaning && w.hindi_meaning.includes(q)) ||
+              (w.english_meaning && w.english_meaning.toLowerCase().includes(q))) {
+            results.push({ page: parseInt(page), ...w });
+            if (results.length >= 25) break;
+          }
+        }
+        if (results.length >= 25) break;
+      }
+
+      if (results.length === 0) {
+        searchResults.innerHTML = `<div style="padding:14px; text-align:center; color:#9ca3af; font-size:13px;">No words found matching "${escapeHtml(q)}"</div>`;
+      } else {
+        searchResults.innerHTML = results.map(r => `
+          <div class="search-result-item" onclick="goToPage(${r.page}); searchResults.style.display='none'; searchInput.value='';">
+            <div class="search-result-header">
+              <span class="search-word">${escapeHtml(r.word)}</span>
+              <span class="search-page">Page ${r.page}</span>
+            </div>
+            <div class="search-hindi">${escapeHtml(r.hindi_meaning)}</div>
+          </div>
+        `).join('');
+      }
+
+      searchResults.style.display = 'block';
+    });
+
+    // Close search dropdown on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-box') && !e.target.closest('.search-results')) {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Start App
+    window.addEventListener('DOMContentLoaded', () => {
+      initDataset();
+      initPDF();
+    });
+  </script>
+</body>
+</html>
