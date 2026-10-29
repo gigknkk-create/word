@@ -1,40 +1,25 @@
-name: NCERT History Vocab Cloud Generator
+name: NCERT Vocab Auto-Generator on Upload
 
 on:
+  push:
+    paths:
+      - 'books/**.pdf'
   workflow_dispatch:
     inputs:
       book_choice:
-        description: 'Select History Book to Generate'
-        required: true
-        type: choice
-        default: 'Class_09_History_India_and_Contemporary_World_I'
-        options:
-          - 'Class_07_History_Our_Pasts_II'
-          - 'Class_08_History_Our_Pasts_III'
-          - 'Class_09_History_India_and_Contemporary_World_I'
-          - 'Class_10_History_India_and_Contemporary_World_II'
-          - 'Class_11_History_Themes_in_World_History'
-          - 'Class_12_History_Themes_in_Indian_History_Part_1'
-          - 'Class_12_History_Themes_in_Indian_History_Part_2'
-          - 'Class_12_History_Themes_in_Indian_History_Part_3'
+        description: 'Specific Book to Generate (or "auto" for newly uploaded/missing)'
+        required: false
+        default: 'auto'
       words_per_page:
         description: 'Target Words Per Page'
-        required: true
+        required: false
         default: '10'
-      start_page:
-        description: 'Start Page Number'
-        required: true
-        default: '1'
-      end_page:
-        description: 'End Page Number (0 for All Pages in Book)'
-        required: true
-        default: '0'
 
 permissions:
   contents: write
 
 jobs:
-  generate:
+  auto_generate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -53,19 +38,13 @@ jobs:
           pip install --upgrade pip
           pip install pymupdf requests
 
-      - name: Run History Vocabulary Generator
+      - name: Run Auto Vocabulary Generator
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SPECIFIC_BOOK: ${{ github.event.inputs.book_choice || 'auto' }}
+          WORDS_PER_PAGE: ${{ github.event.inputs.words_per_page || '10' }}
         run: |
-          python scripts/generate_vocab.py \
-            --pdf "books/${{ github.event.inputs.book_choice }}.pdf" \
-            --book-title "${{ github.event.inputs.book_choice }}" \
-            --words-per-page ${{ github.event.inputs.words_per_page }} \
-            --start-page ${{ github.event.inputs.start_page }} \
-            --end-page ${{ github.event.inputs.end_page }} \
-            --delay 2.0 \
-            --skip-existing \
-            --output-dir datasets
+          python scripts/auto_runner.py
 
       - name: Commit and Push Generated Datasets
         run: |
@@ -73,8 +52,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add datasets/
           if git diff --staged --quiet; then
-            echo "No changes to commit."
+            echo "No new datasets to commit."
           else
-            git commit -m "feat(vocab): update history vocabulary dataset [skip ci]"
+            git commit -m "feat(vocab): auto-generate vocabulary dataset on book upload [skip ci]"
             git push origin HEAD
           fi
