@@ -63,6 +63,7 @@ jobs:
             --start-page ${{ github.event.inputs.start_page }} \
             --end-page ${{ github.event.inputs.end_page }} \
             --delay 4.0 \
+            --skip-existing \
             --output-dir datasets
 
       - name: Commit and Push Generated Datasets

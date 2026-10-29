@@ -7,14 +7,8 @@ import argparse
 import requests
 import fitz  # PyMuPDF
 
-# Official NCERT book online fallback URLs (if PDF is not present in repo)
-NCERT_ONLINE_PDFS = {
-    "class_09_beehive": "https://ncert.nic.in/textbook/pdf/iebe1dd.zip",
-    "class_10_first_flight": "https://ncert.nic.in/textbook/pdf/jeff1dd.zip",
-}
-
-def extract_page_vocabulary(text: str, api_key: str, words_count: int = 10) -> list:
-    """Calls Google Gemini API to extract rich vocabulary with categories (Medium/Hard)."""
+def extract_page_vocabulary(text: str, api_key: str, words_count: int = 10, max_retries: int = 3) -> list:
+    """Calls Google Gemini API to extract rich vocabulary with categories (Medium/Hard) and robust retries."""
     
     prompt = f"""You are an elite lexicographer creating a vocabulary dataset for Indian NCERT school students.
 Analyze the following textbook page text and extract exactly the top {words_count} most important or challenging vocabulary words.
@@ -40,56 +34,67 @@ RESPONSE FORMAT RULES:
 - No other text, introduction, or commentary.
 """
 
-    models = ["gemini-3.5-flash", "gemini-flash-latest", "gemini-3.8-flash"]
-    last_err = None
-
-    for m in models:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={api_key}"
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": 0.2,
-                "topP": 0.8
+    models = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-flash-latest", "gemma-4-26b-a4b-it"]
+    
+    for attempt in range(1, max_retries + 1):
+        for m in models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={api_key}"
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "temperature": 0.2,
+                    "topP": 0.8
+                }
             }
-        }
 
-        try:
-            resp = requests.post(url, json=payload, timeout=60)
-            if resp.status_code == 200:
-                data = resp.json()
-                raw_text = data["candidates"][0]["content"]["parts"][0]["text"]
+            try:
+                resp = requests.post(url, json=payload, timeout=60)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    candidates = data.get("candidates", [])
+                    if candidates and "content" in candidates[0] and "parts" in candidates[0]["content"]:
+                        raw_text = candidates[0]["content"]["parts"][0]["text"]
 
-                match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", raw_text)
-                clean_json = match.group(1).strip() if match else raw_text.strip()
+                        match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", raw_text)
+                        clean_json = match.group(1).strip() if match else raw_text.strip()
 
-                s = clean_json.find("[")
-                e = clean_json.rfind("]")
-                if s != -1 and e != -1:
-                    clean_json = clean_json[s:e+1]
+                        s = clean_json.find("[")
+                        e = clean_json.rfind("]")
+                        if s != -1 and e != -1:
+                            clean_json = clean_json[s:e+1]
 
-                items = json.loads(clean_json)
-                if isinstance(items, list):
-                    return items
-            else:
-                last_err = f"Model {m} returned {resp.status_code}: {resp.text}"
-        except Exception as ex:
-            last_err = str(ex)
+                        items = json.loads(clean_json)
+                        if isinstance(items, list):
+                            return items
+                elif resp.status_code in (429, 503):
+                    print(f"    [Retryable {resp.status_code}] Model {m}: {resp.status_code}. Sleeping 8s...")
+                    time.sleep(8.0)
+                else:
+                    print(f"    [Error {resp.status_code}] Model {m}: {resp.text[:120]}")
+            except Exception as ex:
+                print(f"    [Network/Timeout] Model {m}: {str(ex)[:100]}")
 
-        time.sleep(1.5)
+            time.sleep(2.0)
 
-    print(f"Warning: Failed to extract vocabulary. Last error: {last_err}")
+        if attempt < max_retries:
+            backoff = attempt * 10
+            print(f"  Attempt {attempt}/{max_retries} failed. Backing off {backoff}s before retry...")
+            time.sleep(backoff)
+
+    print("Warning: All retries exhausted for this page.")
     return []
 
 def main():
     parser = argparse.ArgumentParser(description="NCERT Cloud Vocabulary Generator")
     parser.add_argument("--pdf", required=True, help="Path to textbook PDF file")
-    parser.add_argument("--book-title", default="NCERT English Textbook", help="Title of the book")
-    parser.add_argument("--class-level", type=int, default=9, help="Class grade level (1-12)")
+    parser.add_argument("--book-title", default="NCERT History Textbook", help="Title of the book")
+    parser.add_argument("--class-level", type=int, default=8, help="Class grade level (1-12)")
     parser.add_argument("--words-per-page", type=int, default=10, help="Target words count per page")
     parser.add_argument("--start-page", type=int, default=1, help="Start page (1-indexed)")
     parser.add_argument("--end-page", type=int, default=0, help="End page (0 for all pages)")
     parser.add_argument("--delay", type=float, default=4.0, help="Polite delay between pages in seconds")
     parser.add_argument("--output-dir", default="datasets", help="Output directory for JSON")
+    parser.add_argument("--skip-existing", action="store_true", default=True, help="Skip pages already present in dataset")
 
     args = parser.parse_args()
 
@@ -122,16 +127,24 @@ def main():
     if os.path.exists(out_file):
         try:
             with open(out_file, "r", encoding="utf-8") as f:
-                dataset = json.load(f)
+                loaded = json.load(f)
+                if isinstance(loaded, dict):
+                    dataset.update(loaded)
+                    dataset["total_pages"] = total_doc_pages
         except Exception:
             pass
 
     print(f">> Starting vocabulary generation for '{args.book_title}'")
-    print(f">> Processing pages {start_p} to {end_p} (Total: {end_p - start_p + 1} pages)")
-    print(f">> Target: {args.words_per_page} words/page | Category: Medium/Hard")
+    print(f">> Processing pages {start_p} to {end_p} (Total in range: {end_p - start_p + 1} | Book total: {total_doc_pages} pages)")
+    print(f">> Target: {args.words_per_page} words/page | Category: Medium/Hard | Skip Existing: {args.skip_existing}")
 
     words_added = 0
     for p in range(start_p, end_p + 1):
+        # Skip if already exists in dataset
+        if args.skip_existing and str(p) in dataset.get("pages", {}) and len(dataset["pages"][str(p)]) > 0:
+            print(f"[SKIP] Page {p}/{end_p}: Already extracted ({len(dataset['pages'][str(p)])} words). Skipping...")
+            continue
+
         page_idx = p - 1
         page = doc.load_page(page_idx)
         text = page.get_text("text").strip()
@@ -160,7 +173,7 @@ def main():
                 json.dump(dataset, f, indent=2, ensure_ascii=False)
 
             words_added += len(words)
-            print(f"[OK] Page {p}/{end_p}: Saved {len(words)} words. (Total so far: {words_added})")
+            print(f"[OK] Page {p}/{end_p}: Saved {len(words)} words. (New this run: {words_added} | Total stored: {sum(len(v) for v in dataset['pages'].values())})")
         else:
             print(f"[!] Page {p}/{end_p}: 0 words extracted.")
 
@@ -169,7 +182,7 @@ def main():
 
     doc.close()
     print("=" * 60)
-    print(f"[DONE] Completed! Total {words_added} words generated and saved to {out_file}")
+    print(f"[DONE] Completed! Total {words_added} new words generated. Dataset has {len(dataset['pages'])} pages saved at {out_file}")
     print("=" * 60)
 
 if __name__ == "__main__":
