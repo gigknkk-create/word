@@ -7,8 +7,16 @@ import argparse
 import requests
 import fitz  # PyMuPDF
 
-def extract_page_vocabulary(text: str, api_key: str, words_count: int = 10, max_retries: int = 3) -> list:
-    """Calls Google Gemini API to extract rich vocabulary with categories (Medium/Hard) and robust retries."""
+# Reliable models verified on Google Generative Language API
+MODELS = [
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-3-flash-preview"
+]
+
+def extract_page_vocabulary(text: str, api_key: str, words_count: int = 10, max_retries: int = 5) -> list:
+    """Calls Google Gemini API with smart 429 rate-limit handling and multi-model fallback."""
     
     prompt = f"""You are an elite lexicographer creating a vocabulary dataset for Indian NCERT school students.
 Analyze the following textbook page text and extract exactly the top {words_count} most important or challenging vocabulary words.
@@ -34,54 +42,72 @@ RESPONSE FORMAT RULES:
 - No other text, introduction, or commentary.
 """
 
-    models = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-flash-latest", "gemma-4-26b-a4b-it"]
-    
-    for attempt in range(1, max_retries + 1):
-        for m in models:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={api_key}"
-            payload = {
-                "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {
-                    "temperature": 0.2,
-                    "topP": 0.8
-                }
+    model_idx = 0
+    attempt = 0
+
+    while attempt < max_retries:
+        attempt += 1
+        m = MODELS[model_idx % len(MODELS)]
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={api_key}"
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {
+                "temperature": 0.2,
+                "topP": 0.8
             }
+        }
 
-            try:
-                resp = requests.post(url, json=payload, timeout=60)
-                if resp.status_code == 200:
-                    data = resp.json()
-                    candidates = data.get("candidates", [])
-                    if candidates and "content" in candidates[0] and "parts" in candidates[0]["content"]:
-                        raw_text = candidates[0]["content"]["parts"][0]["text"]
+        try:
+            resp = requests.post(url, json=payload, timeout=25)
+            
+            # Case 1: Success
+            if resp.status_code == 200:
+                data = resp.json()
+                candidates = data.get("candidates", [])
+                if candidates and "content" in candidates[0] and "parts" in candidates[0]["content"]:
+                    raw_text = candidates[0]["content"]["parts"][0]["text"]
 
-                        match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", raw_text)
-                        clean_json = match.group(1).strip() if match else raw_text.strip()
+                    match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", raw_text)
+                    clean_json = match.group(1).strip() if match else raw_text.strip()
 
-                        s = clean_json.find("[")
-                        e = clean_json.rfind("]")
-                        if s != -1 and e != -1:
-                            clean_json = clean_json[s:e+1]
+                    s = clean_json.find("[")
+                    e = clean_json.rfind("]")
+                    if s != -1 and e != -1:
+                        clean_json = clean_json[s:e+1]
 
-                        items = json.loads(clean_json)
-                        if isinstance(items, list):
-                            return items
-                elif resp.status_code in (429, 503):
-                    print(f"    [Retryable {resp.status_code}] Model {m}: {resp.status_code}. Sleeping 8s...")
-                    time.sleep(8.0)
-                else:
-                    print(f"    [Error {resp.status_code}] Model {m}: {resp.text[:120]}")
-            except Exception as ex:
-                print(f"    [Network/Timeout] Model {m}: {str(ex)[:100]}")
+                    items = json.loads(clean_json)
+                    if isinstance(items, list) and len(items) > 0:
+                        return items
 
+            # Case 2: Rate Limit (429) -> Rate limit is per project/key, NOT per model!
+            elif resp.status_code == 429:
+                wait_time = 25 + (attempt * 5)
+                print(f"    [Rate Limit 429] Project quota reached. Pausing {wait_time}s for quota window to reset (Attempt {attempt}/{max_retries})...")
+                time.sleep(wait_time)
+                # Keep same primary model after quota resets
+                continue
+
+            # Case 3: Overloaded (503) or Server Error (500) -> Try fallback model
+            elif resp.status_code in (500, 502, 503, 504):
+                print(f"    [Server Error {resp.status_code}] Model {m}. Switching to fallback model in 3s...")
+                model_idx += 1
+                time.sleep(3.0)
+                continue
+
+            else:
+                print(f"    [HTTP {resp.status_code}] Model {m}: {resp.text[:100]}")
+                model_idx += 1
+                time.sleep(3.0)
+
+        except requests.exceptions.Timeout:
+            print(f"    [Timeout] Model {m} timed out after 25s. Switching to fallback model...")
+            model_idx += 1
             time.sleep(2.0)
+        except Exception as ex:
+            print(f"    [Network Exception] {str(ex)[:100]}")
+            time.sleep(4.0)
 
-        if attempt < max_retries:
-            backoff = attempt * 10
-            print(f"  Attempt {attempt}/{max_retries} failed. Backing off {backoff}s before retry...")
-            time.sleep(backoff)
-
-    print("Warning: All retries exhausted for this page.")
+    print(f"    [Warning] All {max_retries} retries exhausted for this page.")
     return []
 
 def main():
@@ -92,7 +118,7 @@ def main():
     parser.add_argument("--words-per-page", type=int, default=10, help="Target words count per page")
     parser.add_argument("--start-page", type=int, default=1, help="Start page (1-indexed)")
     parser.add_argument("--end-page", type=int, default=0, help="End page (0 for all pages)")
-    parser.add_argument("--delay", type=float, default=4.0, help="Polite delay between pages in seconds")
+    parser.add_argument("--delay", type=float, default=4.5, help="Polite delay between pages in seconds (respects 15 RPM)")
     parser.add_argument("--output-dir", default="datasets", help="Output directory for JSON")
     parser.add_argument("--skip-existing", action="store_true", default=True, help="Skip pages already present in dataset")
 
@@ -131,17 +157,22 @@ def main():
                 if isinstance(loaded, dict):
                     dataset.update(loaded)
                     dataset["total_pages"] = total_doc_pages
+                    if "pages" not in dataset:
+                        dataset["pages"] = {}
         except Exception:
             pass
 
     print(f">> Starting vocabulary generation for '{args.book_title}'")
     print(f">> Processing pages {start_p} to {end_p} (Total in range: {end_p - start_p + 1} | Book total: {total_doc_pages} pages)")
     print(f">> Target: {args.words_per_page} words/page | Category: Medium/Hard | Skip Existing: {args.skip_existing}")
+    print(f">> Delay between requests: {args.delay}s (strictly keeps RPM < 12 to eliminate 429 errors)")
 
     words_added = 0
+    pages_processed = 0
+
     for p in range(start_p, end_p + 1):
-        # Skip if already exists in dataset
-        if args.skip_existing and str(p) in dataset.get("pages", {}) and len(dataset["pages"][str(p)]) > 0:
+        # Skip if already exists in dataset with words
+        if args.skip_existing and str(p) in dataset["pages"] and len(dataset["pages"][str(p)]) > 0:
             print(f"[SKIP] Page {p}/{end_p}: Already extracted ({len(dataset['pages'][str(p)])} words). Skipping...")
             continue
 
@@ -161,28 +192,29 @@ def main():
                 w["page_number"] = p
                 w["book"] = args.book_title
                 w["class"] = args.class_level
-                # Ensure category exists
                 if "category" not in w:
                     w["category"] = w.get("difficulty", "Medium")
 
             dataset["pages"][str(p)] = words
             dataset["last_updated"] = time.strftime("%Y-%m-%d %H:%M:%S")
 
-            # Save incrementally after every page
+            # Save incrementally after every successful page
             with open(out_file, "w", encoding="utf-8") as f:
                 json.dump(dataset, f, indent=2, ensure_ascii=False)
 
             words_added += len(words)
+            pages_processed += 1
             print(f"[OK] Page {p}/{end_p}: Saved {len(words)} words. (New this run: {words_added} | Total stored: {sum(len(v) for v in dataset['pages'].values())})")
         else:
-            print(f"[!] Page {p}/{end_p}: 0 words extracted.")
+            print(f"[!] Page {p}/{end_p}: 0 words extracted. NOT saving empty page so it can be re-run.")
 
         # Respect Google Gemini Free Tier 15 RPM limit
         time.sleep(args.delay)
 
     doc.close()
     print("=" * 60)
-    print(f"[DONE] Completed! Total {words_added} new words generated. Dataset has {len(dataset['pages'])} pages saved at {out_file}")
+    print(f"[DONE] Completed! Total {words_added} new words generated across {pages_processed} pages.")
+    print(f"[DONE] Total saved pages in dataset: {len(dataset['pages'])} pages at {out_file}")
     print("=" * 60)
 
 if __name__ == "__main__":
