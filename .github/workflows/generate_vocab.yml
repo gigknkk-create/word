@@ -63,7 +63,7 @@ jobs:
             --words-per-page ${{ github.event.inputs.words_per_page }} \
             --start-page ${{ github.event.inputs.start_page }} \
             --end-page ${{ github.event.inputs.end_page }} \
-            --delay 4.5 \
+            --delay 2.0 \
             --skip-existing \
             --output-dir datasets
 

@@ -7,16 +7,47 @@ import argparse
 import requests
 import fitz  # PyMuPDF
 
-# Reliable models verified on Google Generative Language API
+# Verified active models on Google Generative Language API
 MODELS = [
-    "gemini-3.5-flash-lite",
-    "gemini-3.5-flash",
+    "gemini-3-flash-preview",
     "gemini-3.1-flash-lite",
-    "gemini-3-flash-preview"
+    "gemini-3.5-flash"
 ]
 
-def extract_page_vocabulary(text: str, api_key: str, words_count: int = 10, max_retries: int = 5) -> list:
-    """Calls Google Gemini API with smart 429 rate-limit handling and multi-model fallback."""
+class KeyManager:
+    """Manages multiple Gemini API keys with Round-Robin rotation and cooldown on 429."""
+    def __init__(self, raw_keys: str):
+        self.keys = [k.strip() for k in raw_keys.split(",") if k.strip()]
+        self.cooldowns = {k: 0 for k in self.keys}
+        self.index = 0
+        if not self.keys:
+            raise ValueError("No valid API keys provided!")
+        print(f">> KeyManager initialized with {len(self.keys)} active API key(s).")
+
+    def get_key(self) -> str:
+        now = time.time()
+        # Find an available key not in cooldown
+        for _ in range(len(self.keys)):
+            k = self.keys[self.index % len(self.keys)]
+            self.index += 1
+            if now >= self.cooldowns[k]:
+                return k
+
+        # If all keys in cooldown, pick the one that resets earliest
+        earliest_key = min(self.keys, key=lambda k: self.cooldowns[k])
+        wait_seconds = max(1.0, self.cooldowns[earliest_key] - now)
+        print(f"    [All Keys in Cooldown] Pausing {wait_seconds:.1f}s for key to reset...")
+        time.sleep(wait_seconds)
+        return earliest_key
+
+    def mark_rate_limited(self, key: str, cooldown_seconds: int = 40):
+        self.cooldowns[key] = time.time() + cooldown_seconds
+        short_k = key[:12] + "..." + key[-4:]
+        print(f"    [Key Rotator] Key {short_k} hit 429. Placed on {cooldown_seconds}s cooldown. Switching to next key!")
+
+
+def extract_page_vocabulary(text: str, key_manager: KeyManager, words_count: int = 10, max_retries: int = 5) -> list:
+    """Extracts vocabulary words using multi-key rotation and multi-model fallback."""
     
     prompt = f"""You are an elite lexicographer creating a vocabulary dataset for Indian NCERT school students.
 Analyze the following textbook page text and extract exactly the top {words_count} most important or challenging vocabulary words.
@@ -47,6 +78,7 @@ RESPONSE FORMAT RULES:
 
     while attempt < max_retries:
         attempt += 1
+        api_key = key_manager.get_key()
         m = MODELS[model_idx % len(MODELS)]
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={api_key}"
         payload = {
@@ -58,15 +90,13 @@ RESPONSE FORMAT RULES:
         }
 
         try:
-            resp = requests.post(url, json=payload, timeout=25)
-            
-            # Case 1: Success
+            resp = requests.post(url, json=payload, timeout=22)
+
             if resp.status_code == 200:
                 data = resp.json()
                 candidates = data.get("candidates", [])
                 if candidates and "content" in candidates[0] and "parts" in candidates[0]["content"]:
                     raw_text = candidates[0]["content"]["parts"][0]["text"]
-
                     match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", raw_text)
                     clean_json = match.group(1).strip() if match else raw_text.strip()
 
@@ -79,36 +109,33 @@ RESPONSE FORMAT RULES:
                     if isinstance(items, list) and len(items) > 0:
                         return items
 
-            # Case 2: Rate Limit (429) -> Rate limit is per project/key, NOT per model!
             elif resp.status_code == 429:
-                wait_time = 25 + (attempt * 5)
-                print(f"    [Rate Limit 429] Project quota reached. Pausing {wait_time}s for quota window to reset (Attempt {attempt}/{max_retries})...")
-                time.sleep(wait_time)
-                # Keep same primary model after quota resets
+                key_manager.mark_rate_limited(api_key, cooldown_seconds=40)
+                # Next loop iteration immediately tries the next key
                 continue
 
-            # Case 3: Overloaded (503) or Server Error (500) -> Try fallback model
             elif resp.status_code in (500, 502, 503, 504):
-                print(f"    [Server Error {resp.status_code}] Model {m}. Switching to fallback model in 3s...")
+                print(f"    [Server Error {resp.status_code}] Model {m}. Trying fallback model...")
                 model_idx += 1
-                time.sleep(3.0)
+                time.sleep(1.5)
                 continue
 
             else:
-                print(f"    [HTTP {resp.status_code}] Model {m}: {resp.text[:100]}")
+                print(f"    [HTTP {resp.status_code}] Model {m}: {resp.text[:80]}")
                 model_idx += 1
-                time.sleep(3.0)
+                time.sleep(2.0)
 
         except requests.exceptions.Timeout:
-            print(f"    [Timeout] Model {m} timed out after 25s. Switching to fallback model...")
+            print(f"    [Timeout] Model {m} timed out after 22s. Trying fallback model...")
             model_idx += 1
-            time.sleep(2.0)
+            time.sleep(1.0)
         except Exception as ex:
-            print(f"    [Network Exception] {str(ex)[:100]}")
-            time.sleep(4.0)
+            print(f"    [Network Exception] {str(ex)[:80]}")
+            time.sleep(2.0)
 
-    print(f"    [Warning] All {max_retries} retries exhausted for this page.")
+    print(f"    [Warning] All retries exhausted for this page.")
     return []
+
 
 def main():
     parser = argparse.ArgumentParser(description="NCERT Cloud Vocabulary Generator")
@@ -118,16 +145,18 @@ def main():
     parser.add_argument("--words-per-page", type=int, default=10, help="Target words count per page")
     parser.add_argument("--start-page", type=int, default=1, help="Start page (1-indexed)")
     parser.add_argument("--end-page", type=int, default=0, help="End page (0 for all pages)")
-    parser.add_argument("--delay", type=float, default=4.5, help="Polite delay between pages in seconds (respects 15 RPM)")
+    parser.add_argument("--delay", type=float, default=2.0, help="Delay between pages (1.5-2.0s with multi-key rotation)")
     parser.add_argument("--output-dir", default="datasets", help="Output directory for JSON")
     parser.add_argument("--skip-existing", action="store_true", default=True, help="Skip pages already present in dataset")
 
     args = parser.parse_args()
 
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
+    api_key_str = os.environ.get("GEMINI_API_KEY")
+    if not api_key_str:
         print("ERROR: GEMINI_API_KEY environment variable is not set!")
         sys.exit(1)
+
+    key_manager = KeyManager(api_key_str)
 
     if not os.path.exists(args.pdf):
         print(f"ERROR: PDF file not found at {args.pdf}")
@@ -165,13 +194,12 @@ def main():
     print(f">> Starting vocabulary generation for '{args.book_title}'")
     print(f">> Processing pages {start_p} to {end_p} (Total in range: {end_p - start_p + 1} | Book total: {total_doc_pages} pages)")
     print(f">> Target: {args.words_per_page} words/page | Category: Medium/Hard | Skip Existing: {args.skip_existing}")
-    print(f">> Delay between requests: {args.delay}s (strictly keeps RPM < 12 to eliminate 429 errors)")
+    print(f">> Delay between requests: {args.delay}s (Optimized for {len(key_manager.keys)} keys)")
 
     words_added = 0
     pages_processed = 0
 
     for p in range(start_p, end_p + 1):
-        # Skip if already exists in dataset with words
         if args.skip_existing and str(p) in dataset["pages"] and len(dataset["pages"][str(p)]) > 0:
             print(f"[SKIP] Page {p}/{end_p}: Already extracted ({len(dataset['pages'][str(p)])} words). Skipping...")
             continue
@@ -185,7 +213,7 @@ def main():
             continue
 
         print(f"[*] Page {p}/{end_p}: Extracting {args.words_per_page} words via Gemini...")
-        words = extract_page_vocabulary(text, api_key, words_count=args.words_per_page)
+        words = extract_page_vocabulary(text, key_manager, words_count=args.words_per_page)
 
         if words:
             for w in words:
@@ -208,7 +236,6 @@ def main():
         else:
             print(f"[!] Page {p}/{end_p}: 0 words extracted. NOT saving empty page so it can be re-run.")
 
-        # Respect Google Gemini Free Tier 15 RPM limit
         time.sleep(args.delay)
 
     doc.close()
@@ -216,6 +243,7 @@ def main():
     print(f"[DONE] Completed! Total {words_added} new words generated across {pages_processed} pages.")
     print(f"[DONE] Total saved pages in dataset: {len(dataset['pages'])} pages at {out_file}")
     print("=" * 60)
+
 
 if __name__ == "__main__":
     main()
