@@ -46,7 +46,7 @@ class KeyManager:
         print(f"    [Key Rotator] Key {short_k} hit 429. Placed on {cooldown_seconds}s cooldown. Switching to next key!")
 
 
-def extract_page_vocabulary(text: str, key_manager: KeyManager, words_count: int = 10, max_retries: int = 5) -> list:
+def extract_page_vocabulary(text: str, key_manager: KeyManager, words_count: int = 10, max_retries: int = 25) -> list:
     """Extracts vocabulary words using multi-key rotation and multi-model fallback."""
     
     prompt = f"""You are an elite lexicographer creating a vocabulary dataset for Indian NCERT school students.

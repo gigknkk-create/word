@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <!-- Bundled Class 8 Vocabulary Dataset -->
   <script src="datasets/class_08_data.js"></script>
+  <script src="datasets/class_09_english_kaveri_data.js"></script>
   <style>
     :root {
       --bg-body: #090d16;
@@ -130,6 +131,27 @@
       background: rgba(99, 102, 241, 0.2);
       border: 1px solid rgba(99, 102, 241, 0.4);
       color: #c7d2fe;
+    }
+
+    .book-selector-container {
+      margin-left: 12px;
+    }
+    .book-select-dropdown {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border);
+      color: #f8fafc;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 12px;
+      border-radius: var(--radius-md);
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .book-select-dropdown:hover, .book-select-dropdown:focus {
+      border-color: var(--accent-indigo);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
     }
 
     /* Header Nav Controls */
@@ -782,13 +804,19 @@
   <!-- Sticky Top Header -->
   <header>
     <div class="brand-group">
-      <div class="brand-badge-icon">📖</div>
+      <div class="brand-badge-icon" id="brand-icon">📖</div>
       <div class="brand-meta">
         <h1>
           NCERT VocabStudio
-          <span class="class-tag">Class 8 History</span>
+          <span class="class-tag" id="class-tag-badge">Class 8 History</span>
         </h1>
-        <div class="brand-sub">Our Pasts - III • Interactive Vocabulary Table</div>
+        <div class="brand-sub" id="brand-sub">Our Pasts - III • Interactive Vocabulary Table</div>
+      </div>
+      <div class="book-selector-container">
+        <select id="book-select" class="book-select-dropdown" aria-label="Select Textbook">
+          <option value="class_08">📘 Class 8: History (Our Pasts III)</option>
+          <option value="class_09">📙 Class 9: English (Kaveri)</option>
+        </select>
       </div>
     </div>
 
@@ -843,7 +871,7 @@
       <div class="chapter-sub-text">
         <span class="stat-chip" id="page-stat-badge">📄 Page 1</span>
         <span class="stat-chip" id="words-stat-badge">📝 10 Words</span>
-        <span class="stat-chip">✨ Class 8 History NCERT</span>
+        <span class="stat-chip" id="book-stat-badge">✨ Class 8 History NCERT</span>
       </div>
     </div>
   </div>
@@ -904,17 +932,64 @@
 
   <script>
     // Chapter mapping for Class 8 History
-    const CHAPTERS = [
-      { start: 1, end: 12, title: "Prelims & Contents Overview" },
-      { start: 13, end: 20, title: "Chapter 1: How, When and Where" },
-      { start: 21, end: 37, title: "Chapter 2: From Trade to Territory" },
-      { start: 38, end: 50, title: "Chapter 3: Ruling the Countryside" },
-      { start: 51, end: 62, title: "Chapter 4: Tribals, Dikus and Golden Age" },
-      { start: 63, end: 76, title: "Chapter 5: When People Rebel (1857 & After)" },
-      { start: 77, end: 89, title: "Chapter 6: Civilising the Native, Educating Nation" },
-      { start: 90, end: 104, title: "Chapter 7: Women, Caste and Reform" },
-      { start: 105, end: 124, title: "Chapter 8: The Making of the National Movement" }
-    ];
+    const BOOKS_CONFIG = {
+      class_08: {
+        id: "class_08",
+        title: "Class 8 History",
+        subtitle: "Our Pasts - III • Interactive Vocabulary Table",
+        tag: "Class 8 History",
+        badge: "✨ Class 8 History NCERT",
+        icon: "📖",
+        totalPages: 124,
+        getData: () => window.CLASS_08_DATA,
+        fetchUrl: './datasets/class_08_history_our_pasts_iii.json',
+        chapters: [
+          { start: 1, end: 12, title: "Prelims & Contents Overview" },
+          { start: 13, end: 20, title: "Chapter 1: How, When and Where" },
+          { start: 21, end: 37, title: "Chapter 2: From Trade to Territory" },
+          { start: 38, end: 50, title: "Chapter 3: Ruling the Countryside" },
+          { start: 51, end: 62, title: "Chapter 4: Tribals, Dikus and Golden Age" },
+          { start: 63, end: 76, title: "Chapter 5: When People Rebel (1857 & After)" },
+          { start: 77, end: 89, title: "Chapter 6: Civilising the Native, Educating Nation" },
+          { start: 90, end: 104, title: "Chapter 7: Women, Caste and Reform" },
+          { start: 105, end: 124, title: "Chapter 8: The Making of the National Movement" }
+        ]
+      },
+      class_09: {
+        id: "class_09",
+        title: "Class 9 English",
+        subtitle: "Kaveri • Interactive Vocabulary Table",
+        tag: "Class 9 English",
+        badge: "✨ Class 9 English (Kaveri) NCERT",
+        icon: "📙",
+        totalPages: 276,
+        getData: () => window.CLASS_09_ENGLISH_KAVERI_DATA || window.CLASS_CLASS_09_ENGLISH_KAVERI_DATA,
+        fetchUrl: './datasets/class_09_english_kaveri.json',
+        chapters: [
+          { start: 1, end: 18, title: "Prelims & Foreword" },
+          { start: 19, end: 40, title: "Unit 1: How I Taught My Grandmother to Read" },
+          { start: 41, end: 50, title: "Unit 1 Poem: Bharat Our Land" },
+          { start: 51, end: 74, title: "Unit 2: The Pot Maker" },
+          { start: 75, end: 88, title: "Unit 2 Poem: Gifts of Grace" },
+          { start: 89, end: 103, title: "Unit 3: Winds of Change" },
+          { start: 104, end: 114, title: "Unit 3 Poem: Canvas of Soil" },
+          { start: 115, end: 144, title: "Unit 4: Vitamin-M" },
+          { start: 145, end: 155, title: "Unit 4 Poem: I Cannot Remember My Mother" },
+          { start: 156, end: 173, title: "Unit 5: The World of Limitless Possibilities" },
+          { start: 174, end: 186, title: "Unit 5 Poem: Nine Gold Medals" },
+          { start: 187, end: 202, title: "Unit 6: Twin Melodies" },
+          { start: 203, end: 220, title: "Unit 6 Poem: A Friend Found in Music" },
+          { start: 221, end: 237, title: "Unit 7: Carrier of Words" },
+          { start: 238, end: 249, title: "Unit 7 Poem: Words" },
+          { start: 250, end: 262, title: "Unit 8: Follow That Dream" },
+          { start: 263, end: 276, title: "Unit 8 Poem: Believe in Yourself" }
+        ]
+      }
+    };
+
+    let activeBookKey = 'class_08';
+    let currentBookConfig = BOOKS_CONFIG[activeBookKey];
+    let CHAPTERS = currentBookConfig.chapters;
 
     let dataset = null;
     let currentPage = 1;
@@ -923,6 +998,11 @@
     let currentView = 'table';
 
     // Elements
+    const bookSelect = document.getElementById('book-select');
+    const classTagBadge = document.getElementById('class-tag-badge');
+    const brandSub = document.getElementById('brand-sub');
+    const brandIcon = document.getElementById('brand-icon');
+    const bookStatBadge = document.getElementById('book-stat-badge');
     const pageInput = document.getElementById('page-input');
     const maxPageLabel = document.getElementById('max-page-label');
     const chapterTitle = document.getElementById('chapter-title');
@@ -943,35 +1023,65 @@
     const pillHard = document.getElementById('pill-hard');
 
     // Load Data
-    async function loadData() {
-      if (window.CLASS_08_DATA && window.CLASS_08_DATA.pages) {
-        dataset = window.CLASS_08_DATA;
+    async function switchBook(bookKey, targetPage = 1) {
+      if (!BOOKS_CONFIG[bookKey]) return;
+      activeBookKey = bookKey;
+      currentBookConfig = BOOKS_CONFIG[bookKey];
+      CHAPTERS = currentBookConfig.chapters;
+      
+      if (bookSelect) bookSelect.value = bookKey;
+      if (classTagBadge) classTagBadge.textContent = currentBookConfig.tag;
+      if (brandSub) brandSub.textContent = currentBookConfig.subtitle;
+      if (brandIcon) brandIcon.textContent = currentBookConfig.icon;
+      if (bookStatBadge) bookStatBadge.textContent = currentBookConfig.badge;
+
+      // Reset dataset
+      dataset = null;
+      const inlineData = currentBookConfig.getData();
+      if (inlineData && inlineData.pages) {
+        dataset = inlineData;
       } else {
         try {
-          const res = await fetch('./datasets/class_08_history_our_pasts_iii.json');
+          const res = await fetch(currentBookConfig.fetchUrl);
           dataset = await res.json();
         } catch (e) {
-          console.error("Could not fetch dataset:", e);
+          console.error("Could not fetch dataset for " + bookKey, e);
         }
       }
 
-      if (dataset && dataset.total_pages) {
-        totalPages = dataset.total_pages;
-        maxPageLabel.textContent = totalPages;
-        pageInput.max = totalPages;
-      }
+      totalPages = (dataset && dataset.total_pages) ? dataset.total_pages : currentBookConfig.totalPages;
+      maxPageLabel.textContent = totalPages;
+      pageInput.max = totalPages;
 
-      // Check URL query param ?page=X
-      const urlParams = new URLSearchParams(window.location.search);
-      const qPage = parseInt(urlParams.get('page'));
-      if (qPage && qPage >= 1 && qPage <= totalPages) {
-        currentPage = qPage;
+      // Find first page that has data if page 1 is empty
+      if (dataset && dataset.pages) {
+        const availablePages = Object.keys(dataset.pages).map(Number).sort((a,b) => a-b);
+        if (targetPage === 1 && !dataset.pages[1] && availablePages.length > 0) {
+          currentPage = availablePages[0];
+        } else {
+          currentPage = Math.min(Math.max(1, targetPage), totalPages);
+        }
+      } else {
+        currentPage = targetPage;
       }
 
       renderPage();
     }
 
-    // Render Page
+    async function loadData() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedBook = urlParams.get('book') || 'class_08';
+      const requestedPage = parseInt(urlParams.get('page')) || 1;
+
+      if (bookSelect) {
+        bookSelect.addEventListener('change', (e) => {
+          switchBook(e.target.value, 1);
+        });
+      }
+
+      await switchBook(requestedBook, requestedPage);
+    }
+
     function renderPage() {
       pageInput.value = currentPage;
       pageStatBadge.textContent = `📄 Page ${currentPage} of ${totalPages}`;
