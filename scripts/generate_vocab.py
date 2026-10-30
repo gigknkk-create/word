@@ -7,11 +7,10 @@ import argparse
 import requests
 import fitz  # PyMuPDF
 
-# Verified active models on Google Generative Language API
+# Verified active high-quota models on Google Generative Language API (500 RPD each)
 MODELS = [
-    "gemini-3-flash-preview",
-    "gemini-3.1-flash-lite",
-    "gemini-3.5-flash"
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite"
 ]
 
 class KeyManager:
