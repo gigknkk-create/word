@@ -7,10 +7,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- Bundled Class 8 Vocabulary Dataset -->
+  <!-- Bundled Vocabulary Datasets Class 1 to 12 -->
   <script src="datasets/class_01_english_mridang_data.js"></script>
   <script src="datasets/class_02_english_mridang_data.js"></script>
   <script src="datasets/class_03_english_santoor_data.js"></script>
+  <script src="datasets/class_04_english_santoor_data.js"></script>
+  <script src="datasets/class_05_english_santoor_data.js"></script>
+  <script src="datasets/class_06_english_poorvi_data.js"></script>
+  <script src="datasets/class_07_english_poorvi_data.js"></script>
+  <script src="datasets/class_08_english_honeydew_data.js"></script>
+  <script src="datasets/class_08_english_it_so_happened_data.js"></script>
   <script src="datasets/class_08_data.js"></script>
   <script src="datasets/class_09_english_kaveri_data.js"></script>
   <script src="datasets/class_10_english_first_flight_data.js"></script>
@@ -826,7 +832,13 @@
           <option value="class_01_mridang">🌱 Class 1: English (Mridang)</option>
           <option value="class_02_mridang">🌿 Class 2: English (Mridang)</option>
           <option value="class_03_santoor">🎶 Class 3: English (Santoor)</option>
-          <option value="class_08">📘 Class 8: History (Our Pasts III)</option>
+          <option value="class_04_santoor">🎨 Class 4: English (Santoor)</option>
+          <option value="class_05_santoor">🎈 Class 5: English (Santoor)</option>
+          <option value="class_06_poorvi">📘 Class 6: English (Poorvi)</option>
+          <option value="class_07_poorvi">📙 Class 7: English (Poorvi)</option>
+          <option value="class_08_hd">🍯 Class 8: English (Honeydew)</option>
+          <option value="class_08_it">📖 Class 8: English (It So Happened)</option>
+          <option value="class_08">🏛️ Class 8: History (Our Pasts III)</option>
           <option value="class_09">📙 Class 9: English (Kaveri)</option>
           <option value="class_10_ff">📕 Class 10: First Flight</option>
           <option value="class_10_fp">📗 Class 10: Footprints Without Feet</option>
@@ -1020,6 +1032,78 @@
           { start: 76, end: 100, title: "Unit 3: Harmony" },
           { start: 101, end: 124, title: "Unit 4: The World of Games" }
         ]
+      },
+      class_04_santoor: {
+        id: "class_04_santoor",
+        title: "Class 4 English",
+        subtitle: "Santoor • Interactive Vocabulary Table",
+        tag: "Class 4 English",
+        badge: "✨ Class 4 English (Santoor) NCERT",
+        icon: "🎨",
+        totalPages: 151,
+        getData: () => window.CLASS_CLASS_04_ENGLISH_SANTOOR_DATA || window.CLASS_04_ENGLISH_SANTOOR_DATA,
+        fetchUrl: './datasets/class_04_english_santoor.json',
+        chapters: []
+      },
+      class_05_santoor: {
+        id: "class_05_santoor",
+        title: "Class 5 English",
+        subtitle: "Santoor • Interactive Vocabulary Table",
+        tag: "Class 5 English",
+        badge: "✨ Class 5 English (Santoor) NCERT",
+        icon: "🎈",
+        totalPages: 154,
+        getData: () => window.CLASS_CLASS_05_ENGLISH_SANTOOR_DATA || window.CLASS_05_ENGLISH_SANTOOR_DATA,
+        fetchUrl: './datasets/class_05_english_santoor.json',
+        chapters: []
+      },
+      class_06_poorvi: {
+        id: "class_06_poorvi",
+        title: "Class 6 English",
+        subtitle: "Poorvi • Interactive Vocabulary Table",
+        tag: "Class 6 English",
+        badge: "✨ Class 6 English (Poorvi) NCERT",
+        icon: "📘",
+        totalPages: 178,
+        getData: () => window.CLASS_CLASS_06_ENGLISH_POORVI_DATA || window.CLASS_06_ENGLISH_POORVI_DATA,
+        fetchUrl: './datasets/class_06_english_poorvi.json',
+        chapters: []
+      },
+      class_07_poorvi: {
+        id: "class_07_poorvi",
+        title: "Class 7 English",
+        subtitle: "Poorvi • Interactive Vocabulary Table",
+        tag: "Class 7 English",
+        badge: "✨ Class 7 English (Poorvi) NCERT",
+        icon: "📙",
+        totalPages: 234,
+        getData: () => window.CLASS_CLASS_07_ENGLISH_POORVI_DATA || window.CLASS_07_ENGLISH_POORVI_DATA,
+        fetchUrl: './datasets/class_07_english_poorvi.json',
+        chapters: []
+      },
+      class_08_hd: {
+        id: "class_08_hd",
+        title: "Class 8 English",
+        subtitle: "Honeydew • Interactive Vocabulary Table",
+        tag: "Class 8 English",
+        badge: "✨ Class 8 English (Honeydew) NCERT",
+        icon: "🍯",
+        totalPages: 122,
+        getData: () => window.CLASS_CLASS_08_ENGLISH_HONEYDEW_DATA || window.CLASS_08_ENGLISH_HONEYDEW_DATA,
+        fetchUrl: './datasets/class_08_english_honeydew.json',
+        chapters: []
+      },
+      class_08_it: {
+        id: "class_08_it",
+        title: "Class 8 English",
+        subtitle: "It So Happened • Interactive Vocabulary Table",
+        tag: "Class 8 English",
+        badge: "✨ Class 8 English (It So Happened) NCERT",
+        icon: "📖",
+        totalPages: 85,
+        getData: () => window.CLASS_CLASS_08_ENGLISH_IT_SO_HAPPENED_DATA || window.CLASS_08_ENGLISH_IT_SO_HAPPENED_DATA,
+        fetchUrl: './datasets/class_08_english_it_so_happened.json',
+        chapters: []
       },
       class_03_santoor: {
         id: "class_03_santoor",
