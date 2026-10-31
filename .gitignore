@@ -1,6 +1,8 @@
 .env
 .env.*
 .user_credentials.json
+scratch/
+*.zip
 __pycache__/
 *.pyc
 *.pyo
@@ -8,4 +10,3 @@ venv/
 .venv/
 .DS_Store
 Thumbs.db
-
