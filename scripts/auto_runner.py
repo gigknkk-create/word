@@ -90,7 +90,9 @@ def main():
                 try:
                     with open(dataset_json, "r", encoding="utf-8") as f:
                         jdata = json.load(f)
-                    var_name = "CLASS_" + safe_title.upper() + "_DATA"
+                    clean_id = re.sub(r"[^a-zA-Z0-9]", "_", safe_title).upper()
+                    clean_id = re.sub(r"_+", "_", clean_id).strip("_")
+                    var_name = f"CLASS_{clean_id}_DATA"
                     with open(js_file, "w", encoding="utf-8") as f:
                         f.write(f"window.{var_name} = " + json.dumps(jdata, ensure_ascii=False) + ";\n")
                     print(f"Generated web companion: {js_file}")

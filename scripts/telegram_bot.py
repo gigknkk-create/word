@@ -83,8 +83,8 @@ def answer_callback(callback_query_id, text=""):
 
 def normalize_title(name: str) -> str:
     s = name.lower()
-    s = re.sub(r"class\s*([0-9])\b", r"class_0\1", s)
-    s = re.sub(r"class_([0-9])\b", r"class_0\1", s)
+    s = re.sub(r"class[_\s]*([0-9])(?![0-9])", r"class0\1", s)
+    s = re.sub(r"class[_\s]*([0-9]{2,})", r"class\1", s)
     s = re.sub(r"[^a-z0-9]", "", s)
     return s
 

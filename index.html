@@ -17,7 +17,11 @@
   <script src="datasets/class_07_english_poorvi_data.js"></script>
   <script src="datasets/class_08_english_honeydew_data.js"></script>
   <script src="datasets/class_08_english_it_so_happened_data.js"></script>
+  <script src="datasets/class_06_history_social_science_exploring_society_data.js"></script>
+  <script src="datasets/class_07_history_our_pasts_ii_data.js"></script>
   <script src="datasets/class_08_data.js"></script>
+  <script src="datasets/class_9_history_-_india_and_the_contemporary_world_i_data.js"></script>
+  <script src="datasets/class_10_social_science_-_india_and_the_contemporary_world_ii__history__data.js"></script>
   <script src="datasets/class_09_english_kaveri_data.js"></script>
   <script src="datasets/class_10_english_first_flight_data.js"></script>
   <script src="datasets/class_10_english_footprints_without_feet_data.js"></script>
@@ -842,8 +846,12 @@
           <option value="class_07_poorvi">📙 Class 7: English (Poorvi)</option>
           <option value="class_08_hd">🍯 Class 8: English (Honeydew)</option>
           <option value="class_08_it">📖 Class 8: English (It So Happened)</option>
+          <option value="class_06_hist">🏛️ Class 6: History (Exploring Society)</option>
+          <option value="class_07_hist">🏛️ Class 7: History (Our Pasts II)</option>
           <option value="class_08">🏛️ Class 8: History (Our Pasts III)</option>
+          <option value="class_09_hist">🏛️ Class 9: History (India & Contemporary World I)</option>
           <option value="class_09">📙 Class 9: English (Kaveri)</option>
+          <option value="class_10_hist">🏛️ Class 10: History (India & Contemporary World II)</option>
           <option value="class_10_ff">📕 Class 10: First Flight</option>
           <option value="class_10_fp">📗 Class 10: Footprints Without Feet</option>
           <option value="class_11_hist">🏛️ Class 11: History (Themes in World History)</option>
@@ -1189,6 +1197,81 @@
           { start: 51, end: 60, title: "Chapter 6: The Making of a Scientist" },
           { start: 61, end: 70, title: "Chapter 7: The Necklace" },
           { start: 71, end: 78, title: "Chapter 8: Bholi & The Book That Saved the Earth" }
+        ]
+      },
+      class_06_hist: {
+        id: "class_06_hist",
+        title: "Class 6 History",
+        subtitle: "Exploring Society: India and Beyond • Interactive Vocabulary Table",
+        tag: "Class 6 History",
+        badge: "✨ Class 6 Social Science / History NCERT",
+        icon: "🏛️",
+        totalPages: 228,
+        getData: () => window.CLASS_06_HISTORY_DATA || window.CLASS_CLASS_06_HISTORY_SOCIAL_SCIENCE_EXPLORING_SOCIETY_DATA,
+        fetchUrl: './datasets/class_06_history_social_science_exploring_society.json',
+        chapters: [
+          { start: 1, end: 58, title: "Theme A: India and the World: Land and the People" },
+          { start: 59, end: 104, title: "Theme B: Tapestry of the Past (History)" },
+          { start: 105, end: 136, title: "Theme C: Our Cultural Heritage and Traditions" },
+          { start: 137, end: 182, title: "Theme D: Governance and Democracy" },
+          { start: 183, end: 228, title: "Theme E: Economic Life Around Us" }
+        ]
+      },
+      class_07_hist: {
+        id: "class_07_hist",
+        title: "Class 7 History",
+        subtitle: "Our Pasts - II • Interactive Vocabulary Table",
+        tag: "Class 7 History",
+        badge: "✨ Class 7 History NCERT",
+        icon: "🏛️",
+        totalPages: 120,
+        getData: () => window.CLASS_07_HISTORY_DATA || window.CLASS_CLASS_07_HISTORY_OUR_PASTS_II_DATA,
+        fetchUrl: './datasets/class_07_history_our_pasts_ii.json',
+        chapters: [
+          { start: 1, end: 14, title: "Chapter 1: Introduction: Tracing Changes Through a Thousand Years" },
+          { start: 15, end: 28, title: "Chapter 2: Kings and Kingdoms" },
+          { start: 29, end: 44, title: "Chapter 3: Delhi: 12th to 15th Century" },
+          { start: 45, end: 60, title: "Chapter 4: The Mughals (16th to 17th Century)" },
+          { start: 61, end: 76, title: "Chapter 5: Tribes, Nomads and Settled Communities" },
+          { start: 77, end: 92, title: "Chapter 6: Devotional Paths to the Divine" },
+          { start: 93, end: 108, title: "Chapter 7: The Making of Regional Cultures" },
+          { start: 109, end: 120, title: "Chapter 8: Eighteenth-Century Political Formations" }
+        ]
+      },
+      class_09_hist: {
+        id: "class_09_hist",
+        title: "Class 9 History",
+        subtitle: "India and the Contemporary World - I • Interactive Vocabulary Table",
+        tag: "Class 9 History",
+        badge: "✨ Class 9 History NCERT",
+        icon: "🏛️",
+        totalPages: 128,
+        getData: () => window.CLASS_09_HISTORY_DATA || window.CLASS_CLASS_9_HISTORY_INDIA_AND_THE_CONTEMPORARY_WORLD_I_DATA,
+        fetchUrl: './datasets/class_9_history_-_india_and_the_contemporary_world_i.json',
+        chapters: [
+          { start: 1, end: 24, title: "Chapter 1: The French Revolution" },
+          { start: 25, end: 48, title: "Chapter 2: Socialism in Europe and the Russian Revolution" },
+          { start: 49, end: 74, title: "Chapter 3: Nazism and the Rise of Hitler" },
+          { start: 75, end: 96, title: "Chapter 4: Forest Society and Colonialism" },
+          { start: 97, end: 128, title: "Chapter 5: Pastoralists in the Modern World" }
+        ]
+      },
+      class_10_hist: {
+        id: "class_10_hist",
+        title: "Class 10 History",
+        subtitle: "India and the Contemporary World - II • Interactive Vocabulary Table",
+        tag: "Class 10 History",
+        badge: "✨ Class 10 History NCERT",
+        icon: "🏛️",
+        totalPages: 140,
+        getData: () => window.CLASS_10_HISTORY_DATA || window.CLASS_CLASS_10_SOCIAL_SCIENCE_INDIA_AND_THE_CONTEMPORARY_WORLD_II_HISTORY_DATA,
+        fetchUrl: './datasets/class_10_social_science_-_india_and_the_contemporary_world_ii__history_.json',
+        chapters: [
+          { start: 1, end: 28, title: "Chapter 1: The Rise of Nationalism in Europe" },
+          { start: 29, end: 52, title: "Chapter 2: Nationalism in India" },
+          { start: 53, end: 76, title: "Chapter 3: The Making of a Global World" },
+          { start: 77, end: 104, title: "Chapter 4: The Age of Industrialisation" },
+          { start: 105, end: 140, title: "Chapter 5: Print Culture and the Modern World" }
         ]
       },
       class_11_hist: {
