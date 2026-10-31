@@ -1,6 +1,10 @@
 name: Google Drive Book Sync to GitHub
 
 on:
+  workflow_run:
+    workflows: ["NCERT Vocab Auto-Generator on Upload"]
+    types:
+      - completed
   schedule:
     - cron: '0 */12 * * *'
   workflow_dispatch:
