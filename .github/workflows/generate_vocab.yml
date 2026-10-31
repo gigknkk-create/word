@@ -18,6 +18,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: ncert-vocab-generation
+  cancel-in-progress: false
+
 jobs:
   auto_generate:
     runs-on: ubuntu-latest

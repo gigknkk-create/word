@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <!-- Bundled Class 8 Vocabulary Dataset -->
+  <script src="datasets/class_01_english_mridang_data.js"></script>
   <script src="datasets/class_08_data.js"></script>
   <script src="datasets/class_09_english_kaveri_data.js"></script>
   <script src="datasets/class_10_english_first_flight_data.js"></script>
@@ -820,6 +821,7 @@
       </div>
       <div class="book-selector-container">
         <select id="book-select" class="book-select-dropdown" aria-label="Select Textbook">
+          <option value="class_01_mridang">🌱 Class 1: English (Mridang)</option>
           <option value="class_08">📘 Class 8: History (Our Pasts III)</option>
           <option value="class_09">📙 Class 9: English (Kaveri)</option>
           <option value="class_10_ff">📕 Class 10: First Flight</option>
@@ -996,6 +998,138 @@
           { start: 250, end: 262, title: "Unit 8: Follow That Dream" },
           { start: 263, end: 276, title: "Unit 8 Poem: Believe in Yourself" }
         ]
+      },
+      class_01_mridang: {
+        id: "class_01_mridang",
+        title: "Class 1 English",
+        subtitle: "Mridang • Interactive Vocabulary Table",
+        tag: "Class 1 English",
+        badge: "✨ Class 1 English (Mridang) NCERT",
+        icon: "🌱",
+        totalPages: 136,
+        getData: () => window.CLASS_CLASS_01_ENGLISH_MRIDANG_DATA || window.CLASS_01_ENGLISH_MRIDANG_DATA,
+        fetchUrl: './datasets/class_01_english_mridang.json',
+        chapters: [
+          { start: 1, end: 14, title: "Prelims & Getting Ready" },
+          { start: 15, end: 40, title: "Unit 1: My Family and Me" },
+          { start: 41, end: 70, title: "Unit 2: Life Around Us" },
+          { start: 71, end: 100, title: "Unit 3: Food We Eat" },
+          { start: 101, end: 136, title: "Unit 4: Seasons and Sky" }
+        ]
+      },
+      class_10_ff: {
+        id: "class_10_ff",
+        title: "Class 10 English",
+        subtitle: "First Flight • Interactive Vocabulary Table",
+        tag: "Class 10 English",
+        badge: "✨ Class 10 English (First Flight) NCERT",
+        icon: "📕",
+        totalPages: 150,
+        getData: () => window.CLASS_CLASS_10_ENGLISH_FIRST_FLIGHT_DATA || window.CLASS_10_ENGLISH_FIRST_FLIGHT_DATA,
+        fetchUrl: './datasets/class_10_english_first_flight.json',
+        chapters: [
+          { start: 1, end: 20, title: "Unit 1: A Letter to God & Dust of Snow" },
+          { start: 21, end: 40, title: "Unit 2: Nelson Mandela: Long Walk to Freedom" },
+          { start: 41, end: 60, title: "Unit 3: Two Stories about Flying" },
+          { start: 61, end: 80, title: "Unit 4: From the Diary of Anne Frank" },
+          { start: 81, end: 105, title: "Unit 5: Glimpses of India" },
+          { start: 106, end: 125, title: "Unit 6: Mijbil the Otter" },
+          { start: 126, end: 140, title: "Unit 7: Madam Rides the Bus" },
+          { start: 141, end: 150, title: "Unit 8: The Sermon at Benares & The Proposal" }
+        ]
+      },
+      class_10_fp: {
+        id: "class_10_fp",
+        title: "Class 10 English",
+        subtitle: "Footprints Without Feet • Interactive Vocabulary Table",
+        tag: "Class 10 English",
+        badge: "✨ Class 10 English (Footprints Without Feet) NCERT",
+        icon: "📗",
+        totalPages: 78,
+        getData: () => window.CLASS_CLASS_10_ENGLISH_FOOTPRINTS_WITHOUT_FEET_DATA || window.CLASS_10_ENGLISH_FOOTPRINTS_WITHOUT_FEET_DATA,
+        fetchUrl: './datasets/class_10_english_footprints_without_feet.json',
+        chapters: [
+          { start: 1, end: 10, title: "Chapter 1: A Triumph of Surgery" },
+          { start: 11, end: 20, title: "Chapter 2: The Thief's Story" },
+          { start: 21, end: 30, title: "Chapter 3: The Midnight Visitor" },
+          { start: 31, end: 40, title: "Chapter 4: A Question of Trust" },
+          { start: 41, end: 50, title: "Chapter 5: Footprints Without Feet" },
+          { start: 51, end: 60, title: "Chapter 6: The Making of a Scientist" },
+          { start: 61, end: 70, title: "Chapter 7: The Necklace" },
+          { start: 71, end: 78, title: "Chapter 8: Bholi & The Book That Saved the Earth" }
+        ]
+      },
+      class_11_hb: {
+        id: "class_11_hb",
+        title: "Class 11 English",
+        subtitle: "Hornbill • Interactive Vocabulary Table",
+        tag: "Class 11 English",
+        badge: "✨ Class 11 English (Hornbill) NCERT",
+        icon: "📓",
+        totalPages: 109,
+        getData: () => window.CLASS_CLASS_11_ENGLISH_HORNBILL_DATA || window.CLASS_11_ENGLISH_HORNBILL_DATA,
+        fetchUrl: './datasets/class_11_english_hornbill.json',
+        chapters: [
+          { start: 1, end: 20, title: "Reading Skills: The Portrait of a Lady" },
+          { start: 21, end: 40, title: "We're Not Afraid to Die... If We Can All Be Together" },
+          { start: 41, end: 60, title: "Discovering Tut: The Saga Continues" },
+          { start: 61, end: 85, title: "The Voice of the Rain & The Ailing Planet" },
+          { start: 86, end: 109, title: "The Adventure & Silk Road" }
+        ]
+      },
+      class_11_sn: {
+        id: "class_11_sn",
+        title: "Class 11 English",
+        subtitle: "Snapshots • Interactive Vocabulary Table",
+        tag: "Class 11 English",
+        badge: "✨ Class 11 English (Snapshots) NCERT",
+        icon: "📔",
+        totalPages: 57,
+        getData: () => window.CLASS_CLASS_11_ENGLISH_SNAPSHOTS_DATA || window.CLASS_11_ENGLISH_SNAPSHOTS_DATA,
+        fetchUrl: './datasets/class_11_english_snapshots.json',
+        chapters: [
+          { start: 1, end: 15, title: "Chapter 1: The Summer of the Beautiful White Horse" },
+          { start: 16, end: 28, title: "Chapter 2: The Address" },
+          { start: 29, end: 42, title: "Chapter 3: Mother's Day" },
+          { start: 43, end: 57, title: "Chapter 4: Birth & The Tale of Melon City" }
+        ]
+      },
+      class_12_fl: {
+        id: "class_12_fl",
+        title: "Class 12 English",
+        subtitle: "Flamingo • Interactive Vocabulary Table",
+        tag: "Class 12 English",
+        badge: "✨ Class 12 English (Flamingo) NCERT",
+        icon: "📕",
+        totalPages: 110,
+        getData: () => window.CLASS_CLASS_12_ENGLISH_FLAMINGO_DATA || window.CLASS_12_ENGLISH_FLAMINGO_DATA,
+        fetchUrl: './datasets/class_12_english_flamingo.json',
+        chapters: [
+          { start: 1, end: 20, title: "Prose 1: The Last Lesson" },
+          { start: 21, end: 35, title: "Prose 2: Lost Spring" },
+          { start: 36, end: 50, title: "Prose 3: Deep Water" },
+          { start: 51, end: 70, title: "Prose 4: The Rattrap" },
+          { start: 71, end: 85, title: "Prose 5: Indigo & Poets and Pancakes" },
+          { start: 86, end: 110, title: "Prose 6: The Interview & Going Places" }
+        ]
+      },
+      class_12_vs: {
+        id: "class_12_vs",
+        title: "Class 12 English",
+        subtitle: "Vistas • Interactive Vocabulary Table",
+        tag: "Class 12 English",
+        badge: "✨ Class 12 English (Vistas) NCERT",
+        icon: "📘",
+        totalPages: 80,
+        getData: () => window.CLASS_CLASS_12_ENGLISH_VISTAS_DATA || window.CLASS_12_ENGLISH_VISTAS_DATA,
+        fetchUrl: './datasets/class_12_english_vistas.json',
+        chapters: [
+          { start: 1, end: 15, title: "Chapter 1: The Third Level" },
+          { start: 16, end: 30, title: "Chapter 2: The Tiger King" },
+          { start: 31, end: 45, title: "Chapter 3: Journey to the End of the Earth" },
+          { start: 46, end: 65, title: "Chapter 4: The Enemy" },
+          { start: 66, end: 80, title: "Chapter 5: On the Face of It & Memories of Childhood" }
+        ]
       }
     };
 
@@ -1099,7 +1233,7 @@
       pageStatBadge.textContent = `📄 Page ${currentPage} of ${totalPages}`;
 
       // Update Chapter Info
-      const ch = CHAPTERS.find(c => currentPage >= c.start && currentPage <= c.end);
+      const ch = (CHAPTERS && CHAPTERS.length) ? CHAPTERS.find(c => currentPage >= c.start && currentPage <= c.end) : null;
       chapterTitle.textContent = ch ? `📖 ${ch.title}` : `Class 8 History (Page ${currentPage})`;
 
       // Navigation button states

@@ -91,5 +91,24 @@ def main():
                 except Exception as ex:
                     print(f"Warning: could not create JS bundle: {ex}")
 
+            # If running in GitHub Actions, commit and push incrementally after each completed book!
+            if os.environ.get("GITHUB_ACTIONS") == "true":
+                try:
+                    print(f">> Incrementally committing dataset for '{pdf_name}' to git...")
+                    subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"], check=False)
+                    subprocess.run(["git", "config", "--global", "user.email", "github-actions[bot]@users.noreply.github.com"], check=False)
+                    subprocess.run(["git", "add", "datasets/"], check=False)
+                    diff_check = subprocess.run(["git", "diff", "--staged", "--quiet"])
+                    if diff_check.returncode != 0:
+                        subprocess.run(["git", "commit", "-m", f"feat(vocab): add {safe_name} vocabulary dataset [skip ci]"], check=False)
+                        subprocess.run(["git", "pull", "--rebase", "origin", "main"], check=False)
+                        push_res = subprocess.run(["git", "push", "origin", "HEAD"])
+                        if push_res.returncode == 0:
+                            print(f">> [INCREMENTAL SYNC] Successfully pushed dataset for {pdf_name} to GitHub!")
+                        else:
+                            print(f">> [INCREMENTAL SYNC] Push returned {push_res.returncode}, will sync at workflow end.")
+                except Exception as push_err:
+                    print(f">> [INCREMENTAL SYNC] Warning during auto-push: {push_err}")
+
 if __name__ == "__main__":
     main()
