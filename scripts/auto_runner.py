@@ -101,10 +101,11 @@ def main():
                     diff_check = subprocess.run(["git", "diff", "--staged", "--quiet"])
                     if diff_check.returncode != 0:
                         subprocess.run(["git", "commit", "-m", f"feat(vocab): add {safe_name} vocabulary dataset [skip ci]"], check=False)
+                        subprocess.run(["git", "rebase", "--abort"], capture_output=True, check=False)
                         subprocess.run(["git", "pull", "--rebase", "origin", "main"], check=False)
-                        push_res = subprocess.run(["git", "push", "origin", "HEAD"])
+                        push_res = subprocess.run(["git", "push", "origin", "HEAD:main"])
                         if push_res.returncode == 0:
-                            print(f">> [INCREMENTAL SYNC] Successfully pushed dataset for {pdf_name} to GitHub!")
+                            print(f">> [INCREMENTAL SYNC] Successfully pushed dataset for {pdf_name} to main!")
                         else:
                             print(f">> [INCREMENTAL SYNC] Push returned {push_res.returncode}, will sync at workflow end.")
                 except Exception as push_err:

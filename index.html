@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <!-- Bundled Class 8 Vocabulary Dataset -->
   <script src="datasets/class_01_english_mridang_data.js"></script>
+  <script src="datasets/class_02_english_mridang_data.js"></script>
+  <script src="datasets/class_03_english_santoor_data.js"></script>
   <script src="datasets/class_08_data.js"></script>
   <script src="datasets/class_09_english_kaveri_data.js"></script>
   <script src="datasets/class_10_english_first_flight_data.js"></script>
@@ -822,6 +824,8 @@
       <div class="book-selector-container">
         <select id="book-select" class="book-select-dropdown" aria-label="Select Textbook">
           <option value="class_01_mridang">🌱 Class 1: English (Mridang)</option>
+          <option value="class_02_mridang">🌿 Class 2: English (Mridang)</option>
+          <option value="class_03_santoor">🎶 Class 3: English (Santoor)</option>
           <option value="class_08">📘 Class 8: History (Our Pasts III)</option>
           <option value="class_09">📙 Class 9: English (Kaveri)</option>
           <option value="class_10_ff">📕 Class 10: First Flight</option>
@@ -997,6 +1001,42 @@
           { start: 238, end: 249, title: "Unit 7 Poem: Words" },
           { start: 250, end: 262, title: "Unit 8: Follow That Dream" },
           { start: 263, end: 276, title: "Unit 8 Poem: Believe in Yourself" }
+        ]
+      },
+      class_02_mridang: {
+        id: "class_02_mridang",
+        title: "Class 2 English",
+        subtitle: "Mridang • Interactive Vocabulary Table",
+        tag: "Class 2 English",
+        badge: "✨ Class 2 English (Mridang) NCERT",
+        icon: "🌿",
+        totalPages: 124,
+        getData: () => window.CLASS_CLASS_02_ENGLISH_MRIDANG_DATA || window.CLASS_02_ENGLISH_MRIDANG_DATA,
+        fetchUrl: './datasets/class_02_english_mridang.json',
+        chapters: [
+          { start: 1, end: 15, title: "Prelims & Getting Ready" },
+          { start: 16, end: 45, title: "Unit 1: My Family and Friends" },
+          { start: 46, end: 75, title: "Unit 2: Life Around Us" },
+          { start: 76, end: 100, title: "Unit 3: Harmony" },
+          { start: 101, end: 124, title: "Unit 4: The World of Games" }
+        ]
+      },
+      class_03_santoor: {
+        id: "class_03_santoor",
+        title: "Class 3 English",
+        subtitle: "Santoor • Interactive Vocabulary Table",
+        tag: "Class 3 English",
+        badge: "✨ Class 3 English (Santoor) NCERT",
+        icon: "🎶",
+        totalPages: 144,
+        getData: () => window.CLASS_CLASS_03_ENGLISH_SANTOOR_DATA || window.CLASS_03_ENGLISH_SANTOOR_DATA,
+        fetchUrl: './datasets/class_03_english_santoor.json',
+        chapters: [
+          { start: 1, end: 16, title: "Prelims & Contents" },
+          { start: 17, end: 45, title: "Unit 1: Colours" },
+          { start: 46, end: 75, title: "Unit 2: Toys and Games" },
+          { start: 76, end: 110, title: "Unit 3: Food and Fun" },
+          { start: 111, end: 144, title: "Unit 4: My Neighborhood" }
         ]
       },
       class_01_mridang: {
