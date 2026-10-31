@@ -24,6 +24,9 @@
   <script src="datasets/class_11_history_themes_in_world_history_data.js"></script>
   <script src="datasets/class_11_english_hornbill_data.js"></script>
   <script src="datasets/class_11_english_snapshots_data.js"></script>
+  <script src="datasets/class_12_history_themes_in_indian_history_part_i_data.js"></script>
+  <script src="datasets/class_12_history_themes_in_indian_history_part_ii_data.js"></script>
+  <script src="datasets/class_12_history_themes_in_indian_history_part_iii_data.js"></script>
   <script src="datasets/class_12_english_flamingo_data.js"></script>
   <script src="datasets/class_12_english_vistas_data.js"></script>
   <style>
@@ -846,6 +849,9 @@
           <option value="class_11_hist">🏛️ Class 11: History (Themes in World History)</option>
           <option value="class_11_hb">📓 Class 11: Hornbill</option>
           <option value="class_11_sn">📔 Class 11: Snapshots</option>
+          <option value="class_12_hist_1">🏛️ Class 12: History Part I (Ancient)</option>
+          <option value="class_12_hist_2">🕌 Class 12: History Part II (Medieval)</option>
+          <option value="class_12_hist_3">🇮🇳 Class 12: History Part III (Modern)</option>
           <option value="class_12_fl">📕 Class 12: Flamingo</option>
           <option value="class_12_vs">📘 Class 12: Vistas</option>
         </select>
@@ -1238,6 +1244,57 @@
           { start: 16, end: 28, title: "Chapter 2: The Address" },
           { start: 29, end: 42, title: "Chapter 3: Mother's Day" },
           { start: 43, end: 57, title: "Chapter 4: Birth & The Tale of Melon City" }
+        ]
+      },
+      class_12_hist_1: {
+        id: "class_12_hist_1",
+        title: "Class 12 History Part I",
+        subtitle: "Themes in Indian History - I • Interactive Vocabulary Table",
+        tag: "Class 12 History (Part I)",
+        badge: "✨ Class 12 History Part I NCERT",
+        icon: "🏛️",
+        totalPages: 128,
+        getData: () => window.CLASS_CLASS_12_HISTORY_THEMES_IN_INDIAN_HISTORY_PART_I_DATA || window.CLASS_12_HISTORY_THEMES_IN_INDIAN_HISTORY_PART_I_DATA,
+        fetchUrl: './datasets/class_12_history_themes_in_indian_history_part_i.json',
+        chapters: [
+          { start: 1, end: 26, title: "Theme 1: Bricks, Beads and Bones (Harappan Civilisation)" },
+          { start: 27, end: 54, title: "Theme 2: Kings, Farmers and Towns (Early States & Economies)" },
+          { start: 55, end: 84, title: "Theme 3: Kinship, Caste and Class (Early Societies)" },
+          { start: 85, end: 128, title: "Theme 4: Thinkers, Beliefs and Buildings (Cultural Developments)" }
+        ]
+      },
+      class_12_hist_2: {
+        id: "class_12_hist_2",
+        title: "Class 12 History Part II",
+        subtitle: "Themes in Indian History - II • Interactive Vocabulary Table",
+        tag: "Class 12 History (Part II)",
+        badge: "✨ Class 12 History Part II NCERT",
+        icon: "🕌",
+        totalPages: 128,
+        getData: () => window.CLASS_CLASS_12_HISTORY_THEMES_IN_INDIAN_HISTORY_PART_II_DATA || window.CLASS_12_HISTORY_THEMES_IN_INDIAN_HISTORY_PART_II_DATA,
+        fetchUrl: './datasets/class_12_history_themes_in_indian_history_part_ii.json',
+        chapters: [
+          { start: 1, end: 28, title: "Theme 5: Through the Eyes of Travellers (Al-Biruni, Ibn Battuta)" },
+          { start: 29, end: 60, title: "Theme 6: Bhakti-Sufi Traditions (Changes in Religious Beliefs)" },
+          { start: 61, end: 94, title: "Theme 7: An Imperial Capital: Vijayanagara" },
+          { start: 95, end: 128, title: "Theme 8: Peasants, Zamindars and the State (Agrarian Society)" }
+        ]
+      },
+      class_12_hist_3: {
+        id: "class_12_hist_3",
+        title: "Class 12 History Part III",
+        subtitle: "Themes in Indian History - III • Interactive Vocabulary Table",
+        tag: "Class 12 History (Part III)",
+        badge: "✨ Class 12 History Part III NCERT",
+        icon: "🇮🇳",
+        totalPages: 132,
+        getData: () => window.CLASS_CLASS_12_HISTORY_THEMES_IN_INDIAN_HISTORY_PART_III_DATA || window.CLASS_12_HISTORY_THEMES_IN_INDIAN_HISTORY_PART_III_DATA,
+        fetchUrl: './datasets/class_12_history_themes_in_indian_history_part_iii.json',
+        chapters: [
+          { start: 1, end: 32, title: "Theme 9: Colonialism and the Countryside" },
+          { start: 33, end: 64, title: "Theme 10: Rebels and the Raj (1857 Revolt)" },
+          { start: 65, end: 96, title: "Theme 11: Mahatma Gandhi and the Nationalist Movement" },
+          { start: 97, end: 132, title: "Theme 12: Framing the Constitution (A New Era Begins)" }
         ]
       },
       class_12_fl: {
