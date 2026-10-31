@@ -117,5 +117,19 @@ def main():
                 except Exception as push_err:
                     print(f">> [INCREMENTAL SYNC] Warning during auto-push: {push_err}")
 
+            # Send celebratory completion notification to Telegram with buttons for next books!
+            try:
+                sys.path.append(os.path.dirname(__file__))
+                from telegram_notifier import send_book_completion
+                if os.path.exists(dataset_json):
+                    with open(dataset_json, "r", encoding="utf-8") as f:
+                        d = json.load(f)
+                    tot_pages = len(d.get("pages", {}))
+                    tot_words = sum(len(p) for p in d.get("pages", {}).values())
+                    send_book_completion(safe_name, tot_pages, tot_words, book_wpp)
+                    print(f">> [TELEGRAM] Sent completion notification for {safe_name}")
+            except Exception as tg_err:
+                print(f">> [TELEGRAM] Warning: {tg_err}")
+
 if __name__ == "__main__":
     main()

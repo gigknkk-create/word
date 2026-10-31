@@ -235,7 +235,17 @@ def main():
 
             words_added += len(words)
             pages_processed += 1
-            print(f"[OK] Page {p}/{end_p}: Saved {len(words)} words. (New this run: {words_added} | Total stored: {sum(len(v) for v in dataset['pages'].values())})")
+            cur_stored_words = sum(len(v) for v in dataset['pages'].values())
+            print(f"[OK] Page {p}/{end_p}: Saved {len(words)} words. (New this run: {words_added} | Total stored: {cur_stored_words})")
+
+            # Notify live page status to Telegram on milestone pages (every 20 pages or on the last page)
+            if p % 20 == 0 or p == end_p:
+                try:
+                    sys.path.append(os.path.dirname(__file__))
+                    from telegram_notifier import send_page_progress
+                    send_page_progress(args.book_title, p, total_doc_pages, cur_stored_words, args.words_per_page)
+                except Exception as t_err:
+                    pass
         else:
             print(f"[!] Page {p}/{end_p}: 0 words extracted. NOT saving empty page so it can be re-run.")
 

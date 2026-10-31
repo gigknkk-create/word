@@ -11,9 +11,9 @@ on:
         required: false
         default: 'auto'
       words_per_page:
-        description: 'Target Words Per Page'
+        description: 'Target Words Per Page (10, 15, 18, 20)'
         required: false
-        default: '10'
+        default: '18'
 
 permissions:
   contents: write
@@ -47,7 +47,9 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SPECIFIC_BOOK: ${{ github.event.inputs.book_choice || 'auto' }}
-          WORDS_PER_PAGE: ${{ github.event.inputs.words_per_page || '10' }}
+          WORDS_PER_PAGE: ${{ github.event.inputs.words_per_page || '18' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python scripts/auto_runner.py
 
