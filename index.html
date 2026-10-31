@@ -33,6 +33,9 @@
   <script src="datasets/class_12_history_themes_in_indian_history_part_iii_data.js"></script>
   <script src="datasets/class_12_english_flamingo_data.js"></script>
   <script src="datasets/class_12_english_vistas_data.js"></script>
+  <script src="datasets/class_12_geography_fundamentals_of_human_geography_data.js"></script>
+  <script src="datasets/class_12_geography_india_people_and_economy_data.js"></script>
+  <script src="datasets/class_12_geography_practical_work_in_geography_part_ii_data.js"></script>
   <style>
     :root {
       --bg-body: #090d16;
@@ -862,6 +865,9 @@
           <option value="class_12_hist_3">🇮🇳 Class 12: History Part III (Modern)</option>
           <option value="class_12_fl">📕 Class 12: Flamingo</option>
           <option value="class_12_vs">📘 Class 12: Vistas</option>
+          <option value="class_12_geo_1">🌍 Class 12: Geography (Human Geography)</option>
+          <option value="class_12_geo_2">🇮🇳 Class 12: Geography (India People & Economy)</option>
+          <option value="class_12_geo_3">📐 Class 12: Geography (Practical Work Part II)</option>
         </select>
       </div>
     </div>
@@ -1415,6 +1421,67 @@
           { start: 31, end: 45, title: "Chapter 3: Journey to the End of the Earth" },
           { start: 46, end: 65, title: "Chapter 4: The Enemy" },
           { start: 66, end: 80, title: "Chapter 5: On the Face of It & Memories of Childhood" }
+        ]
+      },
+      class_12_geo_1: {
+        id: "class_12_geo_1",
+        title: "Class 12 Geography",
+        subtitle: "Fundamentals of Human Geography • Interactive Vocabulary Table",
+        tag: "Class 12 Geography (Book 1)",
+        badge: "✨ Class 12 Geography NCERT (20 words/page)",
+        icon: "🌍",
+        totalPages: 92,
+        getData: () => window.CLASS_CLASS_12_GEOGRAPHY_FUNDAMENTALS_OF_HUMAN_GEOGRAPHY_DATA || window.CLASS_12_GEOGRAPHY_FUNDAMENTALS_OF_HUMAN_GEOGRAPHY_DATA,
+        fetchUrl: './datasets/class_12_geography_fundamentals_of_human_geography.json',
+        chapters: [
+          { start: 1, end: 10, title: "Chapter 1: Human Geography: Nature and Scope" },
+          { start: 11, end: 20, title: "Chapter 2: The World Population: Distribution, Density & Growth" },
+          { start: 21, end: 30, title: "Chapter 3: Human Development" },
+          { start: 31, end: 48, title: "Chapter 4: Primary Activities" },
+          { start: 49, end: 60, title: "Chapter 5: Secondary Activities" },
+          { start: 61, end: 72, title: "Chapter 6: Tertiary and Quaternary Activities" },
+          { start: 73, end: 82, title: "Chapter 7: Transport and Communication" },
+          { start: 83, end: 92, title: "Chapter 8: International Trade" }
+        ]
+      },
+      class_12_geo_2: {
+        id: "class_12_geo_2",
+        title: "Class 12 Geography",
+        subtitle: "India: People and Economy • Interactive Vocabulary Table",
+        tag: "Class 12 Geography (Book 2)",
+        badge: "✨ Class 12 Geography NCERT (20 words/page)",
+        icon: "🇮🇳",
+        totalPages: 127,
+        getData: () => window.CLASS_CLASS_12_GEOGRAPHY_INDIA_PEOPLE_AND_ECONOMY_DATA || window.CLASS_12_GEOGRAPHY_INDIA_PEOPLE_AND_ECONOMY_DATA,
+        fetchUrl: './datasets/class_12_geography_india_people_and_economy.json',
+        chapters: [
+          { start: 1, end: 16, title: "Chapter 1: Population: Distribution, Density, Growth & Composition" },
+          { start: 17, end: 26, title: "Chapter 2: Human Settlements" },
+          { start: 27, end: 50, title: "Chapter 3: Land Resources and Agriculture" },
+          { start: 51, end: 64, title: "Chapter 4: Water Resources" },
+          { start: 65, end: 80, title: "Chapter 5: Mineral and Energy Resources" },
+          { start: 81, end: 92, title: "Chapter 6: Planning and Sustainable Development in Indian Context" },
+          { start: 93, end: 108, title: "Chapter 7: Transport and Communication" },
+          { start: 109, end: 118, title: "Chapter 8: International Trade" },
+          { start: 119, end: 127, title: "Chapter 9: Geographical Perspective on Selected Issues & Problems" }
+        ]
+      },
+      class_12_geo_3: {
+        id: "class_12_geo_3",
+        title: "Class 12 Geography",
+        subtitle: "Practical Work in Geography Part II • Interactive Vocabulary Table",
+        tag: "Class 12 Geography (Practical)",
+        badge: "✨ Class 12 Geography Practical NCERT (20 words/page)",
+        icon: "📐",
+        totalPages: 76,
+        getData: () => window.CLASS_CLASS_12_GEOGRAPHY_PRACTICAL_WORK_IN_GEOGRAPHY_PART_II_DATA || window.CLASS_12_GEOGRAPHY_PRACTICAL_WORK_IN_GEOGRAPHY_PART_II_DATA,
+        fetchUrl: './datasets/class_12_geography_practical_work_in_geography_part_ii.json',
+        chapters: [
+          { start: 1, end: 18, title: "Chapter 1: Data - Its Source and Compilation" },
+          { start: 19, end: 38, title: "Chapter 2: Data Processing" },
+          { start: 39, end: 56, title: "Chapter 3: Graphical Representation of Data" },
+          { start: 57, end: 66, title: "Chapter 4: Use of Computer in Data Processing and Mapping" },
+          { start: 67, end: 76, title: "Chapter 5: Field Surveys & Spatial Information Technology" }
         ]
       }
     };

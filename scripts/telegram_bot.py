@@ -158,22 +158,21 @@ def get_dynamic_menu():
 
     keyboard = []
 
-    # History Books Buttons (Top Priority)
-    history_pending = [b for b in pending if b["category"] == "History"]
-    for b in history_pending:
-        # e.g. Class 9 History, Class 10 History
-        short_name = b["filename"].replace(" - India and the Contemporary World", "").replace(".pdf", "").replace("Social Science - ", "").replace(" (History)", "")
-        # Compact callback_data <= 64 bytes: p:<idx>:<wpp>
+    # Geography Books Buttons (Top Priority for current subject)
+    geo_pending = [b for b in pending if b["category"] == "Geography"]
+    for b in geo_pending[:4]:
+        short_name = b["filename"].replace("Class ", "Cl ").replace("Geography - ", "").replace(".pdf", "").replace("Social Science - ", "").replace(" (Geography)", "")
+        if len(short_name) > 30:
+            short_name = short_name[:30]
         keyboard.append([
-            {"text": f"📕 {short_name} (18 WPP)", "callback_data": f"p:{b['idx']}:18"},
-            {"text": f"📕 {short_name} (20 WPP)", "callback_data": f"p:{b['idx']}:20"}
+            {"text": f"🌍 {short_name} (20 WPP)", "callback_data": f"p:{b['idx']}:20"}
         ])
 
-    # Geography / Pol Sci / Economics pending samples
-    other_pending = [b for b in pending if b["category"] != "History"]
+    # Other Subjects pending (History, Pol Sci, Economics)
+    other_pending = [b for b in pending if b["category"] != "Geography"]
     row = []
     for b in other_pending[:4]:
-        short_label = b["filename"][:20].replace(".pdf", "")
+        short_label = b["filename"][:22].replace(".pdf", "")
         row.append({"text": f"📘 {short_label}", "callback_data": f"p:{b['idx']}:18"})
         if len(row) == 2:
             keyboard.append(row)
@@ -286,12 +285,12 @@ def format_status_report():
     msg = (
         f"<b>📊 NCERT Vocabulary Studio - Live Status</b>\n\n"
         f"✅ <b>Completed Textbooks:</b> {len(completed)} Books\n"
-        f"📝 <b>Total Generated Words:</b> {tot_words:,} Words\n"
-        f"🎯 <b>History Coverage:</b> Class 11 (3,546 w), Class 12 Parts I, II, III (6,894 w), Class 8 (1,210 w)\n\n"
+        f"📝 <b>Total Generated Words:</b> {tot_words:,} Words\n\n"
+        f"🏆 <b>Subject Completion Status:</b>\n"
+        f"  • <b>English (Class 1 to 12):</b> 100% Complete (17 Books | 21,725 words)\n"
+        f"  • <b>History (Class 6 to 12):</b> 100% Complete (9 Books | 22,612 words)\n"
+        f"  • <b>Geography (Class 12):</b> 🚀 Active (Target: 20 words/page)\n\n"
         f"⏳ <b>Pending Books in Queue:</b> {len(pending)} Books\n"
-        f"• Class 9 History (India & Contemporary World I)\n"
-        f"• Class 10 History (India & Contemporary World II)\n"
-        f"• Geography, Pol Science, Economics (Classes 9-12)\n\n"
         f"👇 <i>Neeche diye button se kisi bhi book ko GitHub par push karke generation shuru karein:</i>"
     )
     return msg
@@ -354,17 +353,27 @@ def process_updates():
                             rem_msg = format_remaining_report()
                             send_message(chat_id, rem_msg, reply_markup=get_dynamic_menu())
 
-                        elif cb_data.startswith("p:"):
+                        elif cb_data.startswith("p:") or cb_data.startswith("run:"):
                             parts = cb_data.split(":")
-                            b_idx = int(parts[1])
-                            wpp = int(parts[2]) if len(parts) > 2 else 18
-
-                            _, pending = get_catalog()
+                            wpp = 20
                             target = None
-                            for b in pending:
-                                if b["idx"] == b_idx:
-                                    target = b
-                                    break
+                            _, pending = get_catalog()
+
+                            if cb_data.startswith("p:"):
+                                b_idx = int(parts[1])
+                                wpp = int(parts[2]) if len(parts) > 2 else 20
+                                for b in pending:
+                                    if b["idx"] == b_idx:
+                                        target = b
+                                        break
+                            else:
+                                # Legacy format run:<key_query>:<wpp>
+                                key_query = parts[1].lower().replace("_", "")
+                                wpp = int(parts[2]) if len(parts) > 2 else 20
+                                for b in pending:
+                                    if key_query in normalize_title(b["filename"]) or normalize_title(b["filename"]) in key_query:
+                                        target = b
+                                        break
 
                             if target:
                                 send_message(chat_id, f"⏳ <i>Pushing <b>{escape_html(target['filename'])}</b> to GitHub repository...</i>")
@@ -380,7 +389,7 @@ def process_updates():
                                 else:
                                     send_message(chat_id, f"⚠️ Error: {escape_html(result_msg)}", reply_markup=get_dynamic_menu())
                             else:
-                                send_message(chat_id, "⚠️ Book not found in pending queue.", reply_markup=get_dynamic_menu())
+                                send_message(chat_id, "⚠️ Book already completed or not found in pending queue.", reply_markup=get_dynamic_menu())
 
                     # 2. Handle Text Messages (Powered by Gemini 3.5 Flash-Lite)
                     elif "message" in update and "text" in update["message"]:
