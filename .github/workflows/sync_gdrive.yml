@@ -1,0 +1,43 @@
+name: Google Drive Book Sync to GitHub
+
+on:
+  workflow_dispatch:
+    inputs:
+      folder_id:
+        description: 'Google Drive Folder ID or URL (leave blank to use GDRIVE_FOLDER_ID secret)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gdrive-sync-queue
+  cancel-in-progress: false
+
+jobs:
+  sync_books:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pymupdf pillow gdown google-api-python-client google-auth
+
+      - name: Run Google Drive Sync
+        env:
+          GDRIVE_FOLDER_ID: ${{ github.event.inputs.folder_id || secrets.GDRIVE_FOLDER_ID }}
+          GDRIVE_SERVICE_ACCOUNT_KEY: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
+        run: |
+          python scripts/sync_gdrive.py
