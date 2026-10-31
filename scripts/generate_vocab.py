@@ -49,7 +49,11 @@ def extract_page_vocabulary(text: str, key_manager: KeyManager, words_count: int
     """Extracts vocabulary words using multi-key rotation and multi-model fallback."""
     
     prompt = f"""You are an elite lexicographer creating a vocabulary dataset for Indian NCERT school students.
-Analyze the following textbook page text and extract exactly the top {words_count} most important or challenging vocabulary words.
+Analyze the following textbook page text and extract exactly the top {words_count} most important or challenging vocabulary words and terms.
+
+SELECTION CRITERIA:
+1. Prioritize specialized subject terminology, administrative titles, historical, archaeological, geographical, or scientific concepts, and advanced academic English words.
+2. Ensure authentic, standard Hindi translation (शुद्ध, सटीक एवं सरल हिंदी अर्थ) that captures the exact contextual meaning in the chapter.
 
 For every word, return a JSON object with these EXACT keys:
 - "word": "Title Case Word"

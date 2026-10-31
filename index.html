@@ -21,6 +21,7 @@
   <script src="datasets/class_09_english_kaveri_data.js"></script>
   <script src="datasets/class_10_english_first_flight_data.js"></script>
   <script src="datasets/class_10_english_footprints_without_feet_data.js"></script>
+  <script src="datasets/class_11_history_themes_in_world_history_data.js"></script>
   <script src="datasets/class_11_english_hornbill_data.js"></script>
   <script src="datasets/class_11_english_snapshots_data.js"></script>
   <script src="datasets/class_12_english_flamingo_data.js"></script>
@@ -842,6 +843,7 @@
           <option value="class_09">📙 Class 9: English (Kaveri)</option>
           <option value="class_10_ff">📕 Class 10: First Flight</option>
           <option value="class_10_fp">📗 Class 10: Footprints Without Feet</option>
+          <option value="class_11_hist">🏛️ Class 11: History (Themes in World History)</option>
           <option value="class_11_hb">📓 Class 11: Hornbill</option>
           <option value="class_11_sn">📔 Class 11: Snapshots</option>
           <option value="class_12_fl">📕 Class 12: Flamingo</option>
@@ -1181,6 +1183,26 @@
           { start: 51, end: 60, title: "Chapter 6: The Making of a Scientist" },
           { start: 61, end: 70, title: "Chapter 7: The Necklace" },
           { start: 71, end: 78, title: "Chapter 8: Bholi & The Book That Saved the Earth" }
+        ]
+      },
+      class_11_hist: {
+        id: "class_11_hist",
+        title: "Class 11 History",
+        subtitle: "Themes in World History • Interactive Vocabulary Table",
+        tag: "Class 11 History",
+        badge: "✨ Class 11 History (Themes in World History) NCERT",
+        icon: "🏛️",
+        totalPages: 200,
+        getData: () => window.CLASS_CLASS_11_HISTORY_THEMES_IN_WORLD_HISTORY_DATA || window.CLASS_11_HISTORY_THEMES_IN_WORLD_HISTORY_DATA,
+        fetchUrl: './datasets/class_11_history_themes_in_world_history.json',
+        chapters: [
+          { start: 1, end: 28, title: "Theme 1: Writing and City Life (Mesopotamia)" },
+          { start: 29, end: 72, title: "Theme 2: An Empire Across Three Continents (Roman Empire)" },
+          { start: 73, end: 104, title: "Theme 3: Nomadic Empires (Mongols)" },
+          { start: 105, end: 132, title: "Theme 4: The Three Orders (Feudal Society)" },
+          { start: 133, end: 160, title: "Theme 5: Changing Cultural Traditions (Renaissance)" },
+          { start: 161, end: 180, title: "Theme 6: Displacing Indigenous Peoples" },
+          { start: 181, end: 200, title: "Theme 7: Paths to Modernisation (East Asia)" }
         ]
       },
       class_11_hb: {

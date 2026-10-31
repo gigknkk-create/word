@@ -55,16 +55,22 @@ def main():
             print(f"\n[SKIP] '{pdf_name}': Dataset already complete ({existing_pages}/{total_pages} pages). Skipping.")
             continue
 
+        # Determine words per page: History & Social Science books need 18-20 words per page
+        book_wpp = words_per_page
+        if words_per_page == 10 and any(kw in pdf_name.lower() for kw in ["history", "social", "itihas"]):
+            book_wpp = 18
+            print(f">> [SPECIALIZED RULE] History/Social textbook detected: Target increased to {book_wpp} words/page!")
+
         print(f"\n{'='*70}")
         print(f">> [TRIGGERED] Auto-generating vocabulary for: {pdf_name}")
-        print(f">> Total Textbook Pages: {total_pages} | Target Words/Page: {words_per_page}")
+        print(f">> Total Textbook Pages: {total_pages} | Target Words/Page: {book_wpp}")
         print(f"{'='*70}")
 
         cmd = [
             "python", "scripts/generate_vocab.py",
             "--pdf", pdf_path,
             "--book-title", safe_name,
-            "--words-per-page", str(words_per_page),
+            "--words-per-page", str(book_wpp),
             "--start-page", "1",
             "--end-page", "0",
             "--delay", "2.0",
