@@ -180,8 +180,9 @@ def main():
                 subprocess.run(["git", "add", b_path], check=False)
                 c_res = subprocess.run(["git", "commit", "-m", f"feat(books): add {b} from Google Drive"], capture_output=True, text=True)
                 if c_res.returncode == 0:
+                    subprocess.run(["git", "rebase", "--abort"], capture_output=True, check=False)
                     subprocess.run(["git", "pull", "--rebase", "origin", "main"], check=False)
-                    p_res = subprocess.run(["git", "push", "origin", "HEAD"])
+                    p_res = subprocess.run(["git", "push", "origin", "HEAD:main"])
                     if p_res.returncode == 0:
                         print(f">> [PUSHED] Successfully pushed '{b}' to main!")
                     else:

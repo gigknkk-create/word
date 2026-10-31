@@ -1,12 +1,14 @@
 name: Google Drive Book Sync to GitHub
 
 on:
+  schedule:
+    - cron: '0 */12 * * *'
   workflow_dispatch:
     inputs:
       folder_id:
-        description: 'Google Drive Folder ID or URL (leave blank to use GDRIVE_FOLDER_ID secret)'
+        description: 'Google Drive Folder ID or URL'
         required: false
-        default: ''
+        default: '1t_FLjL6dGP3ZWx_kBOfNZOq9C_4PfA_m'
 
 permissions:
   contents: write
@@ -23,6 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
