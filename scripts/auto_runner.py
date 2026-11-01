@@ -60,10 +60,25 @@ def main():
         # Class 12 Rules: Geography (20 WPP), Economics (15 WPP), Political Science (12 WPP)
         book_wpp = words_per_page
         low_name = pdf_name.lower()
+        is_c10 = "class_10" in low_name or "class 10" in low_name or "class10" in low_name
         is_c11 = "class_11" in low_name or "class 11" in low_name or "class11" in low_name
         is_c12 = "class_12" in low_name or "class 12" in low_name or "class12" in low_name
 
-        if is_c11:
+        if is_c10:
+            if any(kw in low_name for kw in ["geography", "bhugol", "contemporary_india"]):
+                book_wpp = 15
+                print(f">> [SPECIALIZED RULE] Class 10 Geography detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["civics", "political", "democratic_politics"]):
+                book_wpp = 12
+                print(f">> [SPECIALIZED RULE] Class 10 Civics detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["economic", "arthashastra", "development"]):
+                book_wpp = 10
+                print(f">> [SPECIALIZED RULE] Class 10 Economics detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["history", "social", "itihas"]):
+                book_wpp = 18
+                print(f">> [SPECIALIZED RULE] Class 10 History detected: Target set to {book_wpp} words/page!")
+
+        elif is_c11:
             if any(kw in low_name for kw in ["geography", "bhugol"]):
                 book_wpp = 18
                 print(f">> [SPECIALIZED RULE] Class 11 Geography detected: Target set to {book_wpp} words/page!")

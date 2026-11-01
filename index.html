@@ -47,6 +47,9 @@
   <script src="datasets/class_11_economics_statistics_for_economics_data.js"></script>
   <script src="datasets/class_11_political_science_indian_constitution_at_work_data.js"></script>
   <script src="datasets/class_11_political_science_political_theory_data.js"></script>
+  <script src="datasets/class_10_geography_contemporary_india_ii_data.js"></script>
+  <script src="datasets/class_10_civics_democratic_politics_ii_data.js"></script>
+  <script src="datasets/class_10_economics_understanding_economic_development_data.js"></script>
   <style>
     :root {
       --bg-body: #090d16;
@@ -868,6 +871,9 @@
           <option value="class_10_hist">🏛️ Class 10: History (India & Contemporary World II)</option>
           <option value="class_10_ff">📕 Class 10: First Flight</option>
           <option value="class_10_fp">📗 Class 10: Footprints Without Feet</option>
+          <option value="class_10_geo">🌍 Class 10: Geography (Contemporary India II)</option>
+          <option value="class_10_civ">🏛️ Class 10: Civics (Democratic Politics II)</option>
+          <option value="class_10_eco">📊 Class 10: Economics (Understanding Economic Dev)</option>
           <option value="class_11_hist">🏛️ Class 11: History (Themes in World History)</option>
           <option value="class_11_hb">📓 Class 11: Hornbill</option>
           <option value="class_11_sn">📔 Class 11: Snapshots</option>
@@ -1720,6 +1726,62 @@
           { start: 89, end: 106, title: "Chapter 6: Citizenship" },
           { start: 107, end: 124, title: "Chapter 7: Nationalism" },
           { start: 125, end: 140, title: "Chapter 8: Secularism" }
+        ]
+      },
+      class_10_geo: {
+        id: "class_10_geo",
+        title: "Class 10 Geography",
+        subtitle: "Contemporary India II • Interactive Vocabulary Table",
+        tag: "Class 10 Geography",
+        badge: "✨ Class 10 Geography NCERT (15 words/page)",
+        icon: "🌍",
+        totalPages: 100,
+        getData: () => window.CLASS_CLASS_10_GEOGRAPHY_CONTEMPORARY_INDIA_II_DATA || window.CLASS_10_GEOGRAPHY_CONTEMPORARY_INDIA_II_DATA,
+        fetchUrl: './datasets/class_10_geography_contemporary_india_ii.json',
+        chapters: [
+          { start: 1, end: 12, title: "Chapter 1: Resources and Development" },
+          { start: 13, end: 18, title: "Chapter 2: Forest and Wildlife Resources" },
+          { start: 19, end: 29, title: "Chapter 3: Water Resources" },
+          { start: 30, end: 42, title: "Chapter 4: Agriculture" },
+          { start: 43, end: 57, title: "Chapter 5: Minerals and Energy Resources" },
+          { start: 58, end: 72, title: "Chapter 6: Manufacturing Industries" },
+          { start: 73, end: 100, title: "Chapter 7: Lifelines of National Economy" }
+        ]
+      },
+      class_10_civ: {
+        id: "class_10_civ",
+        title: "Class 10 Civics",
+        subtitle: "Democratic Politics II • Interactive Vocabulary Table",
+        tag: "Class 10 Civics",
+        badge: "✨ Class 10 Civics NCERT (12 words/page)",
+        icon: "🏛️",
+        totalPages: 88,
+        getData: () => window.CLASS_CLASS_10_CIVICS_DEMOCRATIC_POLITICS_II_DATA || window.CLASS_10_CIVICS_DEMOCRATIC_POLITICS_II_DATA,
+        fetchUrl: './datasets/class_10_civics_democratic_politics_ii.json',
+        chapters: [
+          { start: 1, end: 12, title: "Chapter 1: Power-sharing" },
+          { start: 13, end: 28, title: "Chapter 2: Federalism" },
+          { start: 29, end: 45, title: "Chapter 3: Gender, Religion and Caste" },
+          { start: 46, end: 62, title: "Chapter 4: Political Parties" },
+          { start: 63, end: 88, title: "Chapter 5: Outcomes of Democracy" }
+        ]
+      },
+      class_10_eco: {
+        id: "class_10_eco",
+        title: "Class 10 Economics",
+        subtitle: "Understanding Economic Development • Interactive Vocabulary Table",
+        tag: "Class 10 Economics",
+        badge: "✨ Class 10 Economics NCERT (10 words/page)",
+        icon: "📊",
+        totalPages: 104,
+        getData: () => window.CLASS_CLASS_10_ECONOMICS_UNDERSTANDING_ECONOMIC_DEVELOPMENT_DATA || window.CLASS_10_ECONOMICS_UNDERSTANDING_ECONOMIC_DEVELOPMENT_DATA,
+        fetchUrl: './datasets/class_10_economics_understanding_economic_development.json',
+        chapters: [
+          { start: 1, end: 16, title: "Chapter 1: Development" },
+          { start: 17, end: 36, title: "Chapter 2: Sectors of the Indian Economy" },
+          { start: 37, end: 52, title: "Chapter 3: Money and Credit" },
+          { start: 53, end: 72, title: "Chapter 4: Globalisation and the Indian Economy" },
+          { start: 73, end: 104, title: "Chapter 5: Consumer Rights" }
         ]
       }
     };
