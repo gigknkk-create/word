@@ -40,6 +40,13 @@
   <script src="datasets/class_12_economics_introductory_macroeconomics_data.js"></script>
   <script src="datasets/class_12_political_science_contemporary_world_politics_data.js"></script>
   <script src="datasets/class_12_political_science_politics_in_india_since_independence_data.js"></script>
+  <script src="datasets/class_11_geography_fundamentals_of_physical_geography_data.js"></script>
+  <script src="datasets/class_11_geography_india_physical_environment_data.js"></script>
+  <script src="datasets/class_11_geography_practical_work_in_geography_part_i_data.js"></script>
+  <script src="datasets/class_11_economics_indian_economic_development_data.js"></script>
+  <script src="datasets/class_11_economics_statistics_for_economics_data.js"></script>
+  <script src="datasets/class_11_political_science_indian_constitution_at_work_data.js"></script>
+  <script src="datasets/class_11_political_science_political_theory_data.js"></script>
   <style>
     :root {
       --bg-body: #090d16;
@@ -864,6 +871,13 @@
           <option value="class_11_hist">🏛️ Class 11: History (Themes in World History)</option>
           <option value="class_11_hb">📓 Class 11: Hornbill</option>
           <option value="class_11_sn">📔 Class 11: Snapshots</option>
+          <option value="class_11_geo_1">🌍 Class 11: Geography (Physical Geography)</option>
+          <option value="class_11_geo_2">🇮🇳 Class 11: Geography (India Physical Environment)</option>
+          <option value="class_11_geo_3">📐 Class 11: Geography (Practical Work Part I)</option>
+          <option value="class_11_eco_1">📊 Class 11: Economics (Indian Economic Development)</option>
+          <option value="class_11_eco_2">📈 Class 11: Economics (Statistics for Economics)</option>
+          <option value="class_11_pol_1">🏛️ Class 11: Political Science (Constitution at Work)</option>
+          <option value="class_11_pol_2">📜 Class 11: Political Science (Political Theory)</option>
           <option value="class_12_hist_1">🏛️ Class 12: History Part I (Ancient)</option>
           <option value="class_12_hist_2">🕌 Class 12: History Part II (Medieval)</option>
           <option value="class_12_hist_3">🇮🇳 Class 12: History Part III (Modern)</option>
@@ -1569,6 +1583,143 @@
           { start: 92, end: 111, title: "Chapter 6: The Crisis of Democratic Order" },
           { start: 112, end: 135, title: "Chapter 7: Regional Aspirations" },
           { start: 136, end: 172, title: "Chapter 8: Recent Developments in Indian Politics" }
+        ]
+      },
+      class_11_geo_1: {
+        id: "class_11_geo_1",
+        title: "Class 11 Geography",
+        subtitle: "Fundamentals of Physical Geography • Interactive Vocabulary Table",
+        tag: "Class 11 Geography (Physical)",
+        badge: "✨ Class 11 Geography NCERT (18 words/page)",
+        icon: "🌍",
+        totalPages: 136,
+        getData: () => window.CLASS_CLASS_11_GEOGRAPHY_FUNDAMENTALS_OF_PHYSICAL_GEOGRAPHY_DATA || window.CLASS_11_GEOGRAPHY_FUNDAMENTALS_OF_PHYSICAL_GEOGRAPHY_DATA,
+        fetchUrl: './datasets/class_11_geography_fundamentals_of_physical_geography.json',
+        chapters: [
+          { start: 1, end: 12, title: "Unit I: Geography as a Discipline" },
+          { start: 13, end: 35, title: "Unit II: The Earth (Origin, Interior, Oceans & Continents)" },
+          { start: 36, end: 62, title: "Unit III: Landforms & Geomorphic Processes" },
+          { start: 63, end: 98, title: "Unit IV: Climate (Atmosphere, Radiation & Moisture)" },
+          { start: 99, end: 118, title: "Unit V: Water (Oceans & Movements)" },
+          { start: 119, end: 136, title: "Unit VI: Life on the Earth & Biodiversity" }
+        ]
+      },
+      class_11_geo_2: {
+        id: "class_11_geo_2",
+        title: "Class 11 Geography",
+        subtitle: "India: Physical Environment • Interactive Vocabulary Table",
+        tag: "Class 11 Geography (India Physical)",
+        badge: "✨ Class 11 Geography NCERT (18 words/page)",
+        icon: "🇮🇳",
+        totalPages: 84,
+        getData: () => window.CLASS_CLASS_11_GEOGRAPHY_INDIA_PHYSICAL_ENVIRONMENT_DATA || window.CLASS_11_GEOGRAPHY_INDIA_PHYSICAL_ENVIRONMENT_DATA,
+        fetchUrl: './datasets/class_11_geography_india_physical_environment.json',
+        chapters: [
+          { start: 1, end: 6, title: "Unit I: Introduction — India: Location" },
+          { start: 7, end: 40, title: "Unit II: Physiography (Structure & Drainage System)" },
+          { start: 41, end: 65, title: "Unit III: Climate, Vegetation and Soils" },
+          { start: 66, end: 84, title: "Unit IV: Natural Hazards and Disasters" }
+        ]
+      },
+      class_11_geo_3: {
+        id: "class_11_geo_3",
+        title: "Class 11 Geography",
+        subtitle: "Practical Work in Geography Part I • Interactive Vocabulary Table",
+        tag: "Class 11 Geography (Practical)",
+        badge: "✨ Class 11 Geography Practical NCERT (18 words/page)",
+        icon: "📐",
+        totalPages: 104,
+        getData: () => window.CLASS_CLASS_11_GEOGRAPHY_PRACTICAL_WORK_IN_GEOGRAPHY_PART_I_DATA || window.CLASS_11_GEOGRAPHY_PRACTICAL_WORK_IN_GEOGRAPHY_PART_I_DATA,
+        fetchUrl: './datasets/class_11_geography_practical_work_in_geography_part_i.json',
+        chapters: [
+          { start: 1, end: 16, title: "Chapter 1: Introduction to Maps" },
+          { start: 17, end: 32, title: "Chapter 2: Map Scale" },
+          { start: 33, end: 48, title: "Chapter 3: Latitude, Longitude and Time" },
+          { start: 49, end: 68, title: "Chapter 4: Map Projections" },
+          { start: 69, end: 88, title: "Chapter 5: Topographical Maps" },
+          { start: 89, end: 104, title: "Chapter 6: Introduction to Aerial Photographs & Satellite Images" }
+        ]
+      },
+      class_11_eco_1: {
+        id: "class_11_eco_1",
+        title: "Class 11 Economics",
+        subtitle: "Indian Economic Development • Interactive Vocabulary Table",
+        tag: "Class 11 Economics (Indian Dev)",
+        badge: "✨ Class 11 Economics NCERT (12 words/page)",
+        icon: "📊",
+        totalPages: 176,
+        getData: () => window.CLASS_CLASS_11_ECONOMICS_INDIAN_ECONOMIC_DEVELOPMENT_DATA || window.CLASS_11_ECONOMICS_INDIAN_ECONOMIC_DEVELOPMENT_DATA,
+        fetchUrl: './datasets/class_11_economics_indian_economic_development.json',
+        chapters: [
+          { start: 1, end: 34, title: "Unit I: Development Policies & Experience (1947-1990)" },
+          { start: 35, end: 58, title: "Unit II: Economic Reforms Since 1991 (LPG)" },
+          { start: 59, end: 148, title: "Unit III: Current Challenges Facing the Indian Economy" },
+          { start: 149, end: 176, title: "Unit IV: Development Experiences of India & Neighbours" }
+        ]
+      },
+      class_11_eco_2: {
+        id: "class_11_eco_2",
+        title: "Class 11 Economics",
+        subtitle: "Statistics for Economics • Interactive Vocabulary Table",
+        tag: "Class 11 Economics (Stats)",
+        badge: "✨ Class 11 Economics NCERT (12 words/page)",
+        icon: "📈",
+        totalPages: 132,
+        getData: () => window.CLASS_CLASS_11_ECONOMICS_STATISTICS_FOR_ECONOMICS_DATA || window.CLASS_11_ECONOMICS_STATISTICS_FOR_ECONOMICS_DATA,
+        fetchUrl: './datasets/class_11_economics_statistics_for_economics.json',
+        chapters: [
+          { start: 1, end: 8, title: "Chapter 1: Introduction" },
+          { start: 9, end: 22, title: "Chapter 2: Collection of Data" },
+          { start: 23, end: 39, title: "Chapter 3: Organisation of Data" },
+          { start: 40, end: 58, title: "Chapter 4: Presentation of Data" },
+          { start: 59, end: 88, title: "Chapter 5: Measures of Central Tendency" },
+          { start: 89, end: 108, title: "Chapter 6: Correlation" },
+          { start: 109, end: 124, title: "Chapter 7: Index Numbers" },
+          { start: 125, end: 132, title: "Chapter 8: Use of Statistical Tools" }
+        ]
+      },
+      class_11_pol_1: {
+        id: "class_11_pol_1",
+        title: "Class 11 Political Science",
+        subtitle: "Indian Constitution at Work • Interactive Vocabulary Table",
+        tag: "Class 11 Pol Sci (Constitution)",
+        badge: "✨ Class 11 Political Science NCERT (15 words/page)",
+        icon: "🏛️",
+        totalPages: 256,
+        getData: () => window.CLASS_CLASS_11_POLITICAL_SCIENCE_INDIAN_CONSTITUTION_AT_WORK_DATA || window.CLASS_11_POLITICAL_SCIENCE_INDIAN_CONSTITUTION_AT_WORK_DATA,
+        fetchUrl: './datasets/class_11_political_science_indian_constitution_at_work.json',
+        chapters: [
+          { start: 1, end: 30, title: "Chapter 1: Constitution: Why and How?" },
+          { start: 31, end: 54, title: "Chapter 2: Rights in the Indian Constitution" },
+          { start: 55, end: 82, title: "Chapter 3: Election and Representation" },
+          { start: 83, end: 104, title: "Chapter 4: Executive" },
+          { start: 105, end: 128, title: "Chapter 5: Legislature" },
+          { start: 129, end: 154, title: "Chapter 6: Judiciary" },
+          { start: 155, end: 178, title: "Chapter 7: Federalism" },
+          { start: 179, end: 200, title: "Chapter 8: Local Governments" },
+          { start: 201, end: 224, title: "Chapter 9: Constitution as a Living Document" },
+          { start: 225, end: 256, title: "Chapter 10: The Philosophy of the Constitution" }
+        ]
+      },
+      class_11_pol_2: {
+        id: "class_11_pol_2",
+        title: "Class 11 Political Science",
+        subtitle: "Political Theory • Interactive Vocabulary Table",
+        tag: "Class 11 Pol Sci (Theory)",
+        badge: "✨ Class 11 Political Science NCERT (15 words/page)",
+        icon: "📜",
+        totalPages: 140,
+        getData: () => window.CLASS_CLASS_11_POLITICAL_SCIENCE_POLITICAL_THEORY_DATA || window.CLASS_11_POLITICAL_SCIENCE_POLITICAL_THEORY_DATA,
+        fetchUrl: './datasets/class_11_political_science_political_theory.json',
+        chapters: [
+          { start: 1, end: 16, title: "Chapter 1: Political Theory: An Introduction" },
+          { start: 17, end: 32, title: "Chapter 2: Freedom" },
+          { start: 33, end: 52, title: "Chapter 3: Equality" },
+          { start: 53, end: 70, title: "Chapter 4: Social Justice" },
+          { start: 71, end: 88, title: "Chapter 5: Rights" },
+          { start: 89, end: 106, title: "Chapter 6: Citizenship" },
+          { start: 107, end: 124, title: "Chapter 7: Nationalism" },
+          { start: 125, end: 140, title: "Chapter 8: Secularism" }
         ]
       }
     };

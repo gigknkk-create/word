@@ -55,21 +55,49 @@ def main():
             print(f"\n[SKIP] '{pdf_name}': Dataset already complete ({existing_pages}/{total_pages} pages). Skipping.")
             continue
 
-        # Determine words per page: Geography (20 WPP), History (18 WPP), Economics (15 WPP)
+                # Determine words per page:
+        # Class 11 Rules: Geography (18 WPP), Economics (12 WPP), Political Science (15 WPP)
+        # Class 12 Rules: Geography (20 WPP), Economics (15 WPP), Political Science (12 WPP)
         book_wpp = words_per_page
         low_name = pdf_name.lower()
-        if any(kw in low_name for kw in ["geography", "bhugol"]):
-            book_wpp = 20
-            print(f">> [SPECIALIZED RULE] Geography textbook detected: Target set to {book_wpp} words/page!")
-        elif any(kw in low_name for kw in ["economic", "arthashastra"]):
-            book_wpp = 15
-            print(f">> [SPECIALIZED RULE] Economics textbook detected: Target set to {book_wpp} words/page!")
-        elif any(kw in low_name for kw in ["political", "civics", "rajniti"]):
-            book_wpp = 12
-            print(f">> [SPECIALIZED RULE] Political Science textbook detected: Target set to {book_wpp} words/page!")
-        elif words_per_page == 10 and any(kw in low_name for kw in ["history", "social", "itihas"]):
-            book_wpp = 18
-            print(f">> [SPECIALIZED RULE] History/Social textbook detected: Target increased to {book_wpp} words/page!")
+        is_c11 = "class_11" in low_name or "class 11" in low_name or "class11" in low_name
+        is_c12 = "class_12" in low_name or "class 12" in low_name or "class12" in low_name
+
+        if is_c11:
+            if any(kw in low_name for kw in ["geography", "bhugol"]):
+                book_wpp = 18
+                print(f">> [SPECIALIZED RULE] Class 11 Geography detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["economic", "arthashastra"]):
+                book_wpp = 12
+                print(f">> [SPECIALIZED RULE] Class 11 Economics detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["political", "civics", "rajniti"]):
+                book_wpp = 15
+                print(f">> [SPECIALIZED RULE] Class 11 Political Science detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["history", "social", "itihas"]):
+                book_wpp = 18
+                print(f">> [SPECIALIZED RULE] Class 11 History detected: Target set to {book_wpp} words/page!")
+        elif is_c12:
+            if any(kw in low_name for kw in ["geography", "bhugol"]):
+                book_wpp = 20
+                print(f">> [SPECIALIZED RULE] Class 12 Geography detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["economic", "arthashastra"]):
+                book_wpp = 15
+                print(f">> [SPECIALIZED RULE] Class 12 Economics detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["political", "civics", "rajniti"]):
+                book_wpp = 12
+                print(f">> [SPECIALIZED RULE] Class 12 Political Science detected: Target set to {book_wpp} words/page!")
+            elif any(kw in low_name for kw in ["history", "social", "itihas"]):
+                book_wpp = 18
+                print(f">> [SPECIALIZED RULE] Class 12 History detected: Target set to {book_wpp} words/page!")
+        else:
+            if any(kw in low_name for kw in ["geography", "bhugol"]):
+                book_wpp = 18
+            elif any(kw in low_name for kw in ["economic", "arthashastra"]):
+                book_wpp = 12
+            elif any(kw in low_name for kw in ["political", "civics", "rajniti"]):
+                book_wpp = 15
+            elif any(kw in low_name for kw in ["history", "social", "itihas"]):
+                book_wpp = 18
 
         print(f"\n{'='*70}")
         print(f">> [TRIGGERED] Auto-generating vocabulary for: {pdf_name}")
