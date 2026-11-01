@@ -53,6 +53,10 @@
   <script src="datasets/class_09_geography_contemporary_india_i_data.js"></script>
   <script src="datasets/class_09_civics_democratic_politics_i_data.js"></script>
   <script src="datasets/class_09_economics_data.js"></script>
+  <script src="datasets/class_07_geography_our_environment_data.js"></script>
+  <script src="datasets/class_07_civics_social_and_political_life_ii_data.js"></script>
+  <script src="datasets/class_08_geography_resources_and_development_data.js"></script>
+  <script src="datasets/class_08_civics_social_and_political_life_iii_data.js"></script>
   <style>
     :root {
       --bg-body: #090d16;
@@ -864,8 +868,12 @@
           <option value="class_05_santoor">🎈 Class 5: English (Santoor)</option>
           <option value="class_06_poorvi">📘 Class 6: English (Poorvi)</option>
           <option value="class_07_poorvi">📙 Class 7: English (Poorvi)</option>
+          <option value="class_07_geo">🌍 Class 7: Geography (Our Environment)</option>
+          <option value="class_07_civ">🏛️ Class 7: Civics (Social & Political Life II)</option>
           <option value="class_08_hd">🍯 Class 8: English (Honeydew)</option>
           <option value="class_08_it">📖 Class 8: English (It So Happened)</option>
+          <option value="class_08_geo">🌍 Class 8: Geography (Resources & Development)</option>
+          <option value="class_08_civ">🏛️ Class 8: Civics (Social & Political Life III)</option>
           <option value="class_06_hist">🏛️ Class 6: History (Exploring Society)</option>
           <option value="class_07_hist">🏛️ Class 7: History (Our Pasts II)</option>
           <option value="class_08">🏛️ Class 8: History (Our Pasts III)</option>
@@ -1842,6 +1850,90 @@
           { start: 26, end: 38, title: "Chapter 2: People as Resource" },
           { start: 39, end: 51, title: "Chapter 3: Poverty as a Challenge" },
           { start: 52, end: 64, title: "Chapter 4: Food Security in India" }
+        ]
+      },
+      class_07_geo: {
+        id: "class_07_geo",
+        title: "Class 7 Geography",
+        subtitle: "Our Environment • Interactive Vocabulary Table",
+        tag: "Class 7 Geography",
+        badge: "✨ Class 7 Geography NCERT (15 words/page)",
+        icon: "🌍",
+        totalPages: 68,
+        getData: () => window.CLASS_CLASS_07_GEOGRAPHY_OUR_ENVIRONMENT_DATA || window.CLASS_07_GEOGRAPHY_OUR_ENVIRONMENT_DATA,
+        fetchUrl: './datasets/class_07_geography_our_environment.json',
+        chapters: [
+          { start: 1, end: 12, title: "Prelims & Foreword" },
+          { start: 13, end: 18, title: "Chapter 1: Environment" },
+          { start: 19, end: 24, title: "Chapter 2: Inside Our Earth" },
+          { start: 25, end: 32, title: "Chapter 3: Our Changing Earth" },
+          { start: 33, end: 41, title: "Chapter 4: Air" },
+          { start: 42, end: 50, title: "Chapter 5: Water" },
+          { start: 51, end: 60, title: "Chapter 6: Human Environment Interactions" },
+          { start: 61, end: 68, title: "Chapter 7: Life in the Deserts" }
+        ]
+      },
+      class_07_civ: {
+        id: "class_07_civ",
+        title: "Class 7 Civics",
+        subtitle: "Social and Political Life II • Interactive Vocabulary Table",
+        tag: "Class 7 Civics",
+        badge: "✨ Class 7 Civics NCERT (10 words/page)",
+        icon: "🏛️",
+        totalPages: 115,
+        getData: () => window.CLASS_CLASS_07_CIVICS_SOCIAL_AND_POLITICAL_LIFE_II_DATA || window.CLASS_07_CIVICS_SOCIAL_AND_POLITICAL_LIFE_II_DATA,
+        fetchUrl: './datasets/class_07_civics_social_and_political_life_ii.json',
+        chapters: [
+          { start: 1, end: 18, title: "Prelims & Introductory Note" },
+          { start: 19, end: 28, title: "Chapter 1: On Equality" },
+          { start: 29, end: 40, title: "Chapter 2: Role of Government in Health" },
+          { start: 41, end: 54, title: "Chapter 3: How State Government Works" },
+          { start: 55, end: 64, title: "Chapter 4: Growing up as Boys & Girls" },
+          { start: 65, end: 80, title: "Chapter 5: Women Change the World" },
+          { start: 81, end: 92, title: "Chapter 6: Understanding Media" },
+          { start: 93, end: 102, title: "Chapter 7: Markets Around Us" },
+          { start: 103, end: 115, title: "Chapter 8: A Shirt in the Market" }
+        ]
+      },
+      class_08_geo: {
+        id: "class_08_geo",
+        title: "Class 8 Geography",
+        subtitle: "Resources and Development • Interactive Vocabulary Table",
+        tag: "Class 8 Geography",
+        badge: "✨ Class 8 Geography NCERT (15 words/page)",
+        icon: "🌍",
+        totalPages: 64,
+        getData: () => window.CLASS_CLASS_08_GEOGRAPHY_RESOURCES_AND_DEVELOPMENT_DATA || window.CLASS_08_GEOGRAPHY_RESOURCES_AND_DEVELOPMENT_DATA,
+        fetchUrl: './datasets/class_08_geography_resources_and_development.json',
+        chapters: [
+          { start: 1, end: 8, title: "Prelims & Foreword" },
+          { start: 9, end: 16, title: "Chapter 1: Resources" },
+          { start: 17, end: 33, title: "Chapter 2: Land, Soil, Water & Wildlife" },
+          { start: 34, end: 45, title: "Chapter 3: Agriculture" },
+          { start: 46, end: 55, title: "Chapter 4: Industries" },
+          { start: 56, end: 64, title: "Chapter 5: Human Resources" }
+        ]
+      },
+      class_08_civ: {
+        id: "class_08_civ",
+        title: "Class 8 Civics",
+        subtitle: "Social and Political Life III • Interactive Vocabulary Table",
+        tag: "Class 8 Civics",
+        badge: "✨ Class 8 Civics NCERT (10 words/page)",
+        icon: "🏛️",
+        totalPages: 128,
+        getData: () => window.CLASS_CLASS_08_CIVICS_SOCIAL_AND_POLITICAL_LIFE_III_DATA || window.CLASS_08_CIVICS_SOCIAL_AND_POLITICAL_LIFE_III_DATA,
+        fetchUrl: './datasets/class_08_civics_social_and_political_life_iii.json',
+        chapters: [
+          { start: 1, end: 15, title: "Prelims & Teacher Note" },
+          { start: 16, end: 31, title: "Chapter 1: The Indian Constitution" },
+          { start: 32, end: 42, title: "Chapter 2: Understanding Secularism" },
+          { start: 43, end: 59, title: "Chapter 3: Parliament & Law Making" },
+          { start: 60, end: 74, title: "Chapter 4: Judiciary" },
+          { start: 75, end: 87, title: "Chapter 5: Understanding Marginalisation" },
+          { start: 88, end: 98, title: "Chapter 6: Confronting Marginalisation" },
+          { start: 99, end: 113, title: "Chapter 7: Public Facilities" },
+          { start: 114, end: 128, title: "Chapter 8: Law and Social Justice" }
         ]
       }
     };
