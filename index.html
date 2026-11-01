@@ -36,6 +36,8 @@
   <script src="datasets/class_12_geography_fundamentals_of_human_geography_data.js"></script>
   <script src="datasets/class_12_geography_india_people_and_economy_data.js"></script>
   <script src="datasets/class_12_geography_practical_work_in_geography_part_ii_data.js"></script>
+  <script src="datasets/class_12_economics_introductory_microeconomics_data.js"></script>
+  <script src="datasets/class_12_economics_introductory_macroeconomics_data.js"></script>
   <style>
     :root {
       --bg-body: #090d16;
@@ -868,6 +870,8 @@
           <option value="class_12_geo_1">🌍 Class 12: Geography (Human Geography)</option>
           <option value="class_12_geo_2">🇮🇳 Class 12: Geography (India People & Economy)</option>
           <option value="class_12_geo_3">📐 Class 12: Geography (Practical Work Part II)</option>
+          <option value="class_12_eco_micro">📊 Class 12: Economics (Introductory Microeconomics)</option>
+          <option value="class_12_eco_macro">📈 Class 12: Economics (Introductory Macroeconomics)</option>
         </select>
       </div>
     </div>
@@ -1482,6 +1486,44 @@
           { start: 39, end: 56, title: "Chapter 3: Graphical Representation of Data" },
           { start: 57, end: 66, title: "Chapter 4: Use of Computer in Data Processing and Mapping" },
           { start: 67, end: 76, title: "Chapter 5: Field Surveys & Spatial Information Technology" }
+        ]
+      },
+      class_12_eco_micro: {
+        id: "class_12_eco_micro",
+        title: "Class 12 Economics",
+        subtitle: "Introductory Microeconomics • Interactive Vocabulary Table",
+        tag: "Class 12 Economics (Micro)",
+        badge: "✨ Class 12 Economics (Microeconomics) NCERT (15 words/page)",
+        icon: "📊",
+        totalPages: 100,
+        getData: () => window.CLASS_CLASS_12_ECONOMICS_INTRODUCTORY_MICROECONOMICS_DATA || window.CLASS_12_ECONOMICS_INTRODUCTORY_MICROECONOMICS_DATA,
+        fetchUrl: './datasets/class_12_economics_introductory_microeconomics.json',
+        chapters: [
+          { start: 1, end: 7, title: "Chapter 1: Introduction" },
+          { start: 8, end: 35, title: "Chapter 2: Theory of Consumer Behaviour" },
+          { start: 36, end: 52, title: "Chapter 3: Production and Costs" },
+          { start: 53, end: 70, title: "Chapter 4: The Theory of the Firm under Perfect Competition" },
+          { start: 71, end: 86, title: "Chapter 5: Market Equilibrium" },
+          { start: 87, end: 100, title: "Chapter 6: Non-Competitive Markets" }
+        ]
+      },
+      class_12_eco_macro: {
+        id: "class_12_eco_macro",
+        title: "Class 12 Economics",
+        subtitle: "Introductory Macroeconomics • Interactive Vocabulary Table",
+        tag: "Class 12 Economics (Macro)",
+        badge: "✨ Class 12 Economics (Macroeconomics) NCERT (15 words/page)",
+        icon: "📈",
+        totalPages: 116,
+        getData: () => window.CLASS_CLASS_12_ECONOMICS_INTRODUCTORY_MACROECONOMICS_DATA || window.CLASS_12_ECONOMICS_INTRODUCTORY_MACROECONOMICS_DATA,
+        fetchUrl: './datasets/class_12_economics_introductory_macroeconomics.json',
+        chapters: [
+          { start: 1, end: 8, title: "Chapter 1: Introduction" },
+          { start: 9, end: 26, title: "Chapter 2: National Income Accounting" },
+          { start: 27, end: 52, title: "Chapter 3: Money and Banking" },
+          { start: 53, end: 65, title: "Chapter 4: Determination of Income and Employment" },
+          { start: 66, end: 84, title: "Chapter 5: Government Budget and the Economy" },
+          { start: 85, end: 116, title: "Chapter 6: Open Economy Macroeconomics" }
         ]
       }
     };

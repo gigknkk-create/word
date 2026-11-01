@@ -55,12 +55,15 @@ def main():
             print(f"\n[SKIP] '{pdf_name}': Dataset already complete ({existing_pages}/{total_pages} pages). Skipping.")
             continue
 
-        # Determine words per page: History, Geography & Social Science books need 18-20 words per page
+        # Determine words per page: Geography (20 WPP), History (18 WPP), Economics (15 WPP)
         book_wpp = words_per_page
         low_name = pdf_name.lower()
         if any(kw in low_name for kw in ["geography", "bhugol"]):
             book_wpp = 20
             print(f">> [SPECIALIZED RULE] Geography textbook detected: Target set to {book_wpp} words/page!")
+        elif any(kw in low_name for kw in ["economic", "arthashastra"]):
+            book_wpp = 15
+            print(f">> [SPECIALIZED RULE] Economics textbook detected: Target set to {book_wpp} words/page!")
         elif words_per_page == 10 and any(kw in low_name for kw in ["history", "social", "itihas"]):
             book_wpp = 18
             print(f">> [SPECIALIZED RULE] History/Social textbook detected: Target increased to {book_wpp} words/page!")

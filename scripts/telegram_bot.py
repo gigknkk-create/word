@@ -168,12 +168,22 @@ def get_dynamic_menu():
             {"text": f"🌍 {short_name} (20 WPP)", "callback_data": f"p:{b['idx']}:20"}
         ])
 
-    # Other Subjects pending (History, Pol Sci, Economics)
-    other_pending = [b for b in pending if b["category"] != "Geography"]
+    # Economics Books Buttons (Active Subject)
+    eco_pending = [b for b in pending if b["category"] == "Economics"]
+    for b in eco_pending[:2]:
+        short_name = b["filename"].replace("Class 12 Economics - ", "Cl 12 ").replace(".pdf", "")
+        if len(short_name) > 30:
+            short_name = short_name[:30]
+        keyboard.append([
+            {"text": f"📊 {short_name} (15 WPP)", "callback_data": f"p:{b['idx']}:15"}
+        ])
+
+    # Other Subjects pending (History, Pol Sci)
+    other_pending = [b for b in pending if b["category"] not in ("Geography", "Economics")]
     row = []
     for b in other_pending[:4]:
         short_label = b["filename"][:22].replace(".pdf", "")
-        row.append({"text": f"📘 {short_label}", "callback_data": f"p:{b['idx']}:18"})
+        row.append({"text": f"📘 {short_label}", "callback_data": f"p:{b['idx']}:15"})
         if len(row) == 2:
             keyboard.append(row)
             row = []
