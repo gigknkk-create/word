@@ -60,6 +60,11 @@ def main():
         # Class 12 Rules: Geography (20 WPP), Economics (15 WPP), Political Science (12 WPP)
         book_wpp = words_per_page
         low_name = pdf_name.lower()
+
+        # Science Rule (Class 6 to 10): 15 words/page
+        if any(kw in low_name for kw in ["science", "curiosity"]) and not any(kw in low_name for kw in ["political", "social"]):
+            book_wpp = 15
+            print(f">> [SPECIALIZED RULE] Science detected ({pdf_name}): Target set to {book_wpp} words/page!")
         is_c7 = "class_07" in low_name or "class 07" in low_name or "class07" in low_name or "class_7" in low_name or "class 7" in low_name or "class7" in low_name
         is_c8 = "class_08" in low_name or "class 08" in low_name or "class08" in low_name or "class_8" in low_name or "class 8" in low_name or "class8" in low_name
         is_c9 = "class_09" in low_name or "class 09" in low_name or "class09" in low_name or "class_9" in low_name or "class 9" in low_name or "class9" in low_name

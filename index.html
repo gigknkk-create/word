@@ -57,6 +57,11 @@
   <script src="datasets/class_07_civics_social_and_political_life_ii_data.js"></script>
   <script src="datasets/class_08_geography_resources_and_development_data.js"></script>
   <script src="datasets/class_08_civics_social_and_political_life_iii_data.js"></script>
+  <script src="datasets/class_06_science_curiosity_data.js"></script>
+  <script src="datasets/class_07_science_data.js"></script>
+  <script src="datasets/class_08_science_data.js"></script>
+  <script src="datasets/class_09_science_data.js"></script>
+  <script src="datasets/class_10_science_data.js"></script>
   <style>
     :root {
       --bg-body: #090d16;
@@ -870,11 +875,14 @@
           <option value="class_07_poorvi">📙 Class 7: English (Poorvi)</option>
           <option value="class_07_geo">🌍 Class 7: Geography (Our Environment)</option>
           <option value="class_07_civ">🏛️ Class 7: Civics (Social & Political Life II)</option>
+          <option value="class_07_sci">🔬 Class 7: Science</option>
           <option value="class_08_hd">🍯 Class 8: English (Honeydew)</option>
           <option value="class_08_it">📖 Class 8: English (It So Happened)</option>
           <option value="class_08_geo">🌍 Class 8: Geography (Resources & Development)</option>
           <option value="class_08_civ">🏛️ Class 8: Civics (Social & Political Life III)</option>
+          <option value="class_08_sci">🔬 Class 8: Science</option>
           <option value="class_06_hist">🏛️ Class 6: History (Exploring Society)</option>
+          <option value="class_06_sci">🔬 Class 6: Science (Curiosity)</option>
           <option value="class_07_hist">🏛️ Class 7: History (Our Pasts II)</option>
           <option value="class_08">🏛️ Class 8: History (Our Pasts III)</option>
           <option value="class_09_hist">🏛️ Class 9: History (India & Contemporary World I)</option>
@@ -882,12 +890,14 @@
           <option value="class_09_geo">🌍 Class 9: Geography (Contemporary India I)</option>
           <option value="class_09_civ">🏛️ Class 9: Civics (Democratic Politics I)</option>
           <option value="class_09_eco">📊 Class 9: Economics</option>
+          <option value="class_09_sci">🔬 Class 9: Science</option>
           <option value="class_10_hist">🏛️ Class 10: History (India & Contemporary World II)</option>
           <option value="class_10_ff">📕 Class 10: First Flight</option>
           <option value="class_10_fp">📗 Class 10: Footprints Without Feet</option>
           <option value="class_10_geo">🌍 Class 10: Geography (Contemporary India II)</option>
           <option value="class_10_civ">🏛️ Class 10: Civics (Democratic Politics II)</option>
           <option value="class_10_eco">📊 Class 10: Economics (Understanding Economic Dev)</option>
+          <option value="class_10_sci">🔬 Class 10: Science</option>
           <option value="class_11_hist">🏛️ Class 11: History (Themes in World History)</option>
           <option value="class_11_hb">📓 Class 11: Hornbill</option>
           <option value="class_11_sn">📔 Class 11: Snapshots</option>
@@ -1934,6 +1944,134 @@
           { start: 88, end: 98, title: "Chapter 6: Confronting Marginalisation" },
           { start: 99, end: 113, title: "Chapter 7: Public Facilities" },
           { start: 114, end: 128, title: "Chapter 8: Law and Social Justice" }
+        ]
+      },
+      class_06_sci: {
+        id: "class_06_sci",
+        title: "Class 6 Science",
+        subtitle: "Curiosity (New NEP) • Interactive Vocabulary Table",
+        tag: "Class 6 Science",
+        badge: "✨ Class 6 Science (Curiosity) NCERT (15 words/page)",
+        icon: "🔬",
+        totalPages: 272,
+        getData: () => window.CLASS_CLASS_06_SCIENCE_CURIOSITY_DATA || window.CLASS_06_SCIENCE_CURIOSITY_DATA,
+        fetchUrl: './datasets/class_06_science_curiosity.json',
+        chapters: [
+          { start: 1, end: 18, title: "Prelims & About Book" },
+          { start: 19, end: 36, title: "Chapter 1: The Wonderful World of Science" },
+          { start: 37, end: 62, title: "Chapter 2: Diversity in Living World" },
+          { start: 63, end: 88, title: "Chapter 3: Mindful Eating" },
+          { start: 89, end: 106, title: "Chapter 4: Exploring Magnets" },
+          { start: 107, end: 132, title: "Chapter 5: Measurement of Length & Motion" },
+          { start: 133, end: 160, title: "Chapter 6: Materials Around Us" },
+          { start: 161, end: 188, title: "Chapter 7: Temperature and its Measurement" },
+          { start: 189, end: 216, title: "Chapter 8: A Journey through States of Water" },
+          { start: 217, end: 244, title: "Chapter 9: Methods of Separation in Everyday Life" },
+          { start: 245, end: 272, title: "Chapter 10-12: Nature's Treasures & Beyond" }
+        ]
+      },
+      class_07_sci: {
+        id: "class_07_sci",
+        title: "Class 7 Science",
+        subtitle: "Science • Interactive Vocabulary Table",
+        tag: "Class 7 Science",
+        badge: "✨ Class 7 Science NCERT (15 words/page)",
+        icon: "🔬",
+        totalPages: 184,
+        getData: () => window.CLASS_CLASS_07_SCIENCE_DATA || window.CLASS_07_SCIENCE_DATA,
+        fetchUrl: './datasets/class_07_science.json',
+        chapters: [
+          { start: 1, end: 16, title: "Prelims & Contents" },
+          { start: 17, end: 27, title: "Chapter 1: Nutrition in Plants" },
+          { start: 28, end: 41, title: "Chapter 2: Nutrition in Animals" },
+          { start: 42, end: 55, title: "Chapter 3: Heat" },
+          { start: 56, end: 68, title: "Chapter 4: Acids, Bases and Salts" },
+          { start: 69, end: 81, title: "Chapter 5: Physical and Chemical Changes" },
+          { start: 82, end: 94, title: "Chapter 6: Respiration in Organisms" },
+          { start: 95, end: 108, title: "Chapter 7: Transportation in Animals & Plants" },
+          { start: 109, end: 122, title: "Chapter 8: Reproduction in Plants" },
+          { start: 123, end: 136, title: "Chapter 9: Motion and Time" },
+          { start: 137, end: 152, title: "Chapter 10: Electric Current and its Effects" },
+          { start: 153, end: 168, title: "Chapter 11: Light" },
+          { start: 169, end: 184, title: "Chapter 12-13: Forests & Wastewater Story" }
+        ]
+      },
+      class_08_sci: {
+        id: "class_08_sci",
+        title: "Class 8 Science",
+        subtitle: "Science • Interactive Vocabulary Table",
+        tag: "Class 8 Science",
+        badge: "✨ Class 8 Science NCERT (15 words/page)",
+        icon: "🔬",
+        totalPages: 196,
+        getData: () => window.CLASS_CLASS_08_SCIENCE_DATA || window.CLASS_08_SCIENCE_DATA,
+        fetchUrl: './datasets/class_08_science.json',
+        chapters: [
+          { start: 1, end: 14, title: "Prelims & Contents" },
+          { start: 15, end: 31, title: "Chapter 1: Crop Production & Management" },
+          { start: 32, end: 46, title: "Chapter 2: Microorganisms: Friend & Foe" },
+          { start: 47, end: 54, title: "Chapter 3: Coal and Petroleum" },
+          { start: 55, end: 68, title: "Chapter 4: Combustion and Flame" },
+          { start: 69, end: 82, title: "Chapter 5: Conservation of Plants & Animals" },
+          { start: 83, end: 96, title: "Chapter 6: Reproduction in Animals" },
+          { start: 97, end: 110, title: "Chapter 7: Reaching the Age of Adolescence" },
+          { start: 111, end: 128, title: "Chapter 8: Force and Pressure" },
+          { start: 129, end: 142, title: "Chapter 9: Friction" },
+          { start: 143, end: 156, title: "Chapter 10: Sound" },
+          { start: 157, end: 168, title: "Chapter 11: Chemical Effects of Electric Current" },
+          { start: 169, end: 182, title: "Chapter 12: Some Natural Phenomena" },
+          { start: 183, end: 196, title: "Chapter 13: Light" }
+        ]
+      },
+      class_09_sci: {
+        id: "class_09_sci",
+        title: "Class 9 Science",
+        subtitle: "Science • Interactive Vocabulary Table",
+        tag: "Class 9 Science",
+        badge: "✨ Class 9 Science NCERT (15 words/page)",
+        icon: "🔬",
+        totalPages: 292,
+        getData: () => window.CLASS_CLASS_09_SCIENCE_DATA || window.CLASS_09_SCIENCE_DATA,
+        fetchUrl: './datasets/class_09_science.json',
+        chapters: [
+          { start: 1, end: 20, title: "Prelims & Introduction" },
+          { start: 21, end: 44, title: "Chapter 1: Exploration & World of Science" },
+          { start: 45, end: 68, title: "Chapter 2: Cell: Building Block of Life" },
+          { start: 69, end: 94, title: "Chapter 3: Tissues" },
+          { start: 95, end: 120, title: "Chapter 4: Matter in Our Surroundings" },
+          { start: 121, end: 144, title: "Chapter 5: Is Matter Around Us Pure" },
+          { start: 145, end: 172, title: "Chapter 6: Atoms and Molecules" },
+          { start: 173, end: 198, title: "Chapter 7: Structure of the Atom" },
+          { start: 199, end: 224, title: "Chapter 8: Motion" },
+          { start: 225, end: 248, title: "Chapter 9: Force and Laws of Motion" },
+          { start: 249, end: 270, title: "Chapter 10: Gravitation" },
+          { start: 271, end: 292, title: "Chapter 11-12: Work, Energy & Sound" }
+        ]
+      },
+      class_10_sci: {
+        id: "class_10_sci",
+        title: "Class 10 Science",
+        subtitle: "Science • Interactive Vocabulary Table",
+        tag: "Class 10 Science",
+        badge: "✨ Class 10 Science NCERT (15 words/page)",
+        icon: "🔬",
+        totalPages: 232,
+        getData: () => window.CLASS_CLASS_10_SCIENCE_DATA || window.CLASS_10_SCIENCE_DATA,
+        fetchUrl: './datasets/class_10_science.json',
+        chapters: [
+          { start: 1, end: 12, title: "Prelims & Contents" },
+          { start: 13, end: 28, title: "Chapter 1: Chemical Reactions & Equations" },
+          { start: 29, end: 48, title: "Chapter 2: Acids, Bases and Salts" },
+          { start: 49, end: 69, title: "Chapter 3: Metals and Non-metals" },
+          { start: 70, end: 91, title: "Chapter 4: Carbon and its Compounds" },
+          { start: 92, end: 114, title: "Chapter 5: Life Processes" },
+          { start: 115, end: 130, title: "Chapter 6: Control and Coordination" },
+          { start: 131, end: 146, title: "Chapter 7: How do Organisms Reproduce?" },
+          { start: 147, end: 158, title: "Chapter 8: Heredity" },
+          { start: 159, end: 182, title: "Chapter 9: Light – Reflection & Refraction" },
+          { start: 183, end: 196, title: "Chapter 10: Human Eye & Colourful World" },
+          { start: 197, end: 214, title: "Chapter 11: Electricity" },
+          { start: 215, end: 232, title: "Chapter 12-13: Magnetic Effects & Environment" }
         ]
       }
     };
