@@ -64,6 +64,9 @@ def main():
         elif any(kw in low_name for kw in ["economic", "arthashastra"]):
             book_wpp = 15
             print(f">> [SPECIALIZED RULE] Economics textbook detected: Target set to {book_wpp} words/page!")
+        elif any(kw in low_name for kw in ["political", "civics", "rajniti"]):
+            book_wpp = 12
+            print(f">> [SPECIALIZED RULE] Political Science textbook detected: Target set to {book_wpp} words/page!")
         elif words_per_page == 10 and any(kw in low_name for kw in ["history", "social", "itihas"]):
             book_wpp = 18
             print(f">> [SPECIALIZED RULE] History/Social textbook detected: Target increased to {book_wpp} words/page!")

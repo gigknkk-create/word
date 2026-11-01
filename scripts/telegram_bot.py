@@ -158,28 +158,18 @@ def get_dynamic_menu():
 
     keyboard = []
 
-    # Geography Books Buttons (Top Priority for current subject)
-    geo_pending = [b for b in pending if b["category"] == "Geography"]
-    for b in geo_pending[:4]:
-        short_name = b["filename"].replace("Class ", "Cl ").replace("Geography - ", "").replace(".pdf", "").replace("Social Science - ", "").replace(" (Geography)", "")
+        # Political Science Buttons (Active Subject)
+    pol_pending = [b for b in pending if b["category"] == "Political Science"]
+    for b in pol_pending[:2]:
+        short_name = b["filename"].replace("Class 12 Political Science - ", "Cl 12 Pol: ").replace(".pdf", "")
         if len(short_name) > 30:
             short_name = short_name[:30]
         keyboard.append([
-            {"text": f"🌍 {short_name} (20 WPP)", "callback_data": f"p:{b['idx']}:20"}
+            {"text": f"🏛️ {short_name} (12 WPP)", "callback_data": f"p:{b['idx']}:12"}
         ])
 
-    # Economics Books Buttons (Active Subject)
-    eco_pending = [b for b in pending if b["category"] == "Economics"]
-    for b in eco_pending[:2]:
-        short_name = b["filename"].replace("Class 12 Economics - ", "Cl 12 ").replace(".pdf", "")
-        if len(short_name) > 30:
-            short_name = short_name[:30]
-        keyboard.append([
-            {"text": f"📊 {short_name} (15 WPP)", "callback_data": f"p:{b['idx']}:15"}
-        ])
-
-    # Other Subjects pending (History, Pol Sci)
-    other_pending = [b for b in pending if b["category"] not in ("Geography", "Economics")]
+    # Other Subjects pending
+    other_pending = [b for b in pending if b["category"] != "Political Science"]
     row = []
     for b in other_pending[:4]:
         short_label = b["filename"][:22].replace(".pdf", "")
@@ -299,7 +289,7 @@ def format_status_report():
         f"🏆 <b>Subject Completion Status:</b>\n"
         f"  • <b>English (Class 1 to 12):</b> 100% Complete (17 Books | 21,725 words)\n"
         f"  • <b>History (Class 6 to 12):</b> 100% Complete (9 Books | 22,612 words)\n"
-        f"  • <b>Geography (Class 12):</b> 🚀 Active (Target: 20 words/page)\n\n"
+        f"  • <b>Geography (Class 12):</b> 100% Complete (3 Books | 5,740 words)\n  • <b>Economics (Class 12):</b> 100% Complete (2 Books | 3,195 words)\n  • <b>Political Science (Class 12):</b> 🚀 Active (Target: 12 words/page)\n\n"
         f"⏳ <b>Pending Books in Queue:</b> {len(pending)} Books\n"
         f"👇 <i>Neeche diye button se kisi bhi book ko GitHub par push karke generation shuru karein:</i>"
     )
