@@ -50,6 +50,9 @@
   <script src="datasets/class_10_geography_contemporary_india_ii_data.js"></script>
   <script src="datasets/class_10_civics_democratic_politics_ii_data.js"></script>
   <script src="datasets/class_10_economics_understanding_economic_development_data.js"></script>
+  <script src="datasets/class_09_geography_contemporary_india_i_data.js"></script>
+  <script src="datasets/class_09_civics_democratic_politics_i_data.js"></script>
+  <script src="datasets/class_09_economics_data.js"></script>
   <style>
     :root {
       --bg-body: #090d16;
@@ -868,6 +871,9 @@
           <option value="class_08">🏛️ Class 8: History (Our Pasts III)</option>
           <option value="class_09_hist">🏛️ Class 9: History (India & Contemporary World I)</option>
           <option value="class_09">📙 Class 9: English (Kaveri)</option>
+          <option value="class_09_geo">🌍 Class 9: Geography (Contemporary India I)</option>
+          <option value="class_09_civ">🏛️ Class 9: Civics (Democratic Politics I)</option>
+          <option value="class_09_eco">📊 Class 9: Economics</option>
           <option value="class_10_hist">🏛️ Class 10: History (India & Contemporary World II)</option>
           <option value="class_10_ff">📕 Class 10: First Flight</option>
           <option value="class_10_fp">📗 Class 10: Footprints Without Feet</option>
@@ -1782,6 +1788,60 @@
           { start: 37, end: 52, title: "Chapter 3: Money and Credit" },
           { start: 53, end: 72, title: "Chapter 4: Globalisation and the Indian Economy" },
           { start: 73, end: 104, title: "Chapter 5: Consumer Rights" }
+        ]
+      },
+      class_09_geo: {
+        id: "class_09_geo",
+        title: "Class 9 Geography",
+        subtitle: "Contemporary India I • Interactive Vocabulary Table",
+        tag: "Class 9 Geography",
+        badge: "✨ Class 9 Geography NCERT (15 words/page)",
+        icon: "🌍",
+        totalPages: 68,
+        getData: () => window.CLASS_CLASS_09_GEOGRAPHY_CONTEMPORARY_INDIA_I_DATA || window.CLASS_09_GEOGRAPHY_CONTEMPORARY_INDIA_I_DATA,
+        fetchUrl: './datasets/class_09_geography_contemporary_india_i.json',
+        chapters: [
+          { start: 1, end: 16, title: "Chapter 1: India – Size and Location" },
+          { start: 17, end: 26, title: "Chapter 2: Physical Features of India" },
+          { start: 27, end: 36, title: "Chapter 3: Drainage" },
+          { start: 37, end: 48, title: "Chapter 4: Climate" },
+          { start: 49, end: 57, title: "Chapter 5: Natural Vegetation and Wildlife" },
+          { start: 58, end: 68, title: "Chapter 6: Population & Glossary" }
+        ]
+      },
+      class_09_civ: {
+        id: "class_09_civ",
+        title: "Class 9 Civics",
+        subtitle: "Democratic Politics I • Interactive Vocabulary Table",
+        tag: "Class 9 Civics",
+        badge: "✨ Class 9 Civics NCERT (12 words/page)",
+        icon: "🏛️",
+        totalPages: 104,
+        getData: () => window.CLASS_CLASS_09_CIVICS_DEMOCRATIC_POLITICS_I_DATA || window.CLASS_09_CIVICS_DEMOCRATIC_POLITICS_I_DATA,
+        fetchUrl: './datasets/class_09_civics_democratic_politics_i.json',
+        chapters: [
+          { start: 1, end: 32, title: "Chapter 1: What is Democracy? Why Democracy?" },
+          { start: 33, end: 48, title: "Chapter 2: Constitutional Design" },
+          { start: 49, end: 70, title: "Chapter 3: Electoral Politics" },
+          { start: 71, end: 87, title: "Chapter 4: Working of Institutions" },
+          { start: 88, end: 104, title: "Chapter 5: Democratic Rights" }
+        ]
+      },
+      class_09_eco: {
+        id: "class_09_eco",
+        title: "Class 9 Economics",
+        subtitle: "Economics • Interactive Vocabulary Table",
+        tag: "Class 9 Economics",
+        badge: "✨ Class 9 Economics NCERT (10 words/page)",
+        icon: "📊",
+        totalPages: 64,
+        getData: () => window.CLASS_CLASS_09_ECONOMICS_DATA || window.CLASS_09_ECONOMICS_DATA,
+        fetchUrl: './datasets/class_09_economics.json',
+        chapters: [
+          { start: 1, end: 25, title: "Chapter 1: The Story of Village Palampur" },
+          { start: 26, end: 38, title: "Chapter 2: People as Resource" },
+          { start: 39, end: 51, title: "Chapter 3: Poverty as a Challenge" },
+          { start: 52, end: 64, title: "Chapter 4: Food Security in India" }
         ]
       }
     };
