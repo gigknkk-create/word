@@ -325,15 +325,16 @@ Keep responses concise, clear, and action-oriented. Use simple clean text or sta
     data = json.dumps(payload).encode("utf-8")
 
     for k in gemini_keys:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key={k}"
-        try:
-            req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
-            with urllib.request.urlopen(req, timeout=12) as resp:
-                res = json.loads(resp.read().decode("utf-8"))
-                return res["candidates"][0]["content"]["parts"][0]["text"].strip()
-        except Exception as e:
-            print(f"[Gemini Key Fallback] {e}")
-            continue
+        for m in ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite"]:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={k}"
+            try:
+                req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
+                with urllib.request.urlopen(req, timeout=12) as resp:
+                    res = json.loads(resp.read().decode("utf-8"))
+                    return res["candidates"][0]["content"]["parts"][0]["text"].strip()
+            except Exception as e:
+                print(f"[Gemini Key/Model Fallback {m}] {e}")
+                continue
     return None
 
 def format_status_report():

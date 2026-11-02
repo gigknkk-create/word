@@ -9,8 +9,8 @@ import fitz  # PyMuPDF
 
 # Verified active high-quota models on Google Generative Language API (500 RPD each)
 MODELS = [
-    "gemini-3.5-flash-lite",
-    "gemini-3.1-flash-lite"
+    "gemini-3.1-flash-lite",
+    "gemini-3.5-flash-lite"
 ]
 
 class KeyManager:
@@ -113,8 +113,9 @@ RESPONSE FORMAT RULES:
                         return items
 
             elif resp.status_code == 429:
-                key_manager.mark_rate_limited(api_key, cooldown_seconds=40)
-                # Next loop iteration immediately tries the next key
+                key_manager.mark_rate_limited(api_key, cooldown_seconds=30)
+                model_idx += 1
+                # Next loop iteration immediately tries the next key and fallback model
                 continue
 
             elif resp.status_code in (500, 502, 503, 504):
