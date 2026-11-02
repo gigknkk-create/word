@@ -238,8 +238,8 @@ def main():
             cur_stored_words = sum(len(v) for v in dataset['pages'].values())
             print(f"[OK] Page {p}/{end_p}: Saved {len(words)} words. (New this run: {words_added} | Total stored: {cur_stored_words})")
 
-            # Notify live page status to Telegram on milestone pages (every 20 pages or on the last page)
-            if p % 20 == 0 or p == end_p:
+            # Notify live page status to Telegram on milestone pages (every 10 pages or on the last page)
+            if p % 10 == 0 or p == end_p:
                 try:
                     sys.path.append(os.path.dirname(__file__))
                     from telegram_notifier import send_page_progress
