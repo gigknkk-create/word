@@ -15,17 +15,28 @@ def main():
         print("No 'books' directory found.")
         sys.exit(0)
 
-    pdf_files = [f for f in sorted(os.listdir(books_dir)) if f.lower().endswith(".pdf")]
-    if not pdf_files:
+    # Collect all PDF books from books/ and books/state_board/
+    pdf_entries = []  # list of (full_path, filename, is_state_board)
+    for root, dirs, files in os.walk(books_dir):
+        for f in sorted(files):
+            if f.lower().endswith(".pdf"):
+                full_p = os.path.join(root, f)
+                is_sb = (
+                    "state_board" in root.replace("\\", "/").lower()
+                    or "state_board" in f.lower()
+                    or any(sb_tag in f.lower() for sb_tag in ["bseb", "bstbpc", "bihar_board", "upboard", "stateboard"])
+                )
+                pdf_entries.append((full_p, f, is_sb))
+
+    if not pdf_entries:
         print("No PDF files found in 'books/'.")
         sys.exit(0)
 
-    print(f">> Found {len(pdf_files)} PDF book(s) in 'books/': {pdf_files}")
+    print(f">> Found {len(pdf_entries)} PDF book(s) in 'books/': {[e[1] for e in pdf_entries]}")
 
-    for pdf_name in pdf_files:
+    for pdf_path, pdf_name, is_state_board in pdf_entries:
         safe_name = os.path.splitext(pdf_name)[0]
         safe_title = re.sub(r"[^a-zA-Z0-9_-]", "_", safe_name).lower()
-        pdf_path = os.path.join(books_dir, pdf_name)
         dataset_json = os.path.join(datasets_dir, f"{safe_title}.json")
 
         # If a specific book was requested via workflow_dispatch, only run that one
@@ -61,8 +72,20 @@ def main():
         book_wpp = words_per_page
         low_name = pdf_name.lower()
 
-        # Science Rule (Class 6 to 10): 15 words/page
-        if any(kw in low_name for kw in ["science", "curiosity"]) and not any(kw in low_name for kw in ["political", "social"]):
+        # State Board Rule (Class > 6 -> 10 WPP, Class <= 6 -> 8 WPP)
+        if is_state_board:
+            m = re.search(r'class[_\s-]*0?([0-9]{1,2})', low_name)
+            cnum = int(m.group(1)) if m else None
+            if cnum is not None:
+                if cnum > 6:
+                    book_wpp = 10
+                else:
+                    book_wpp = 8
+            else:
+                book_wpp = 10
+            print(f">> [STATE BOARD SPECIALIZED RULE] State Board book detected: '{pdf_name}' (Class {cnum or 'Unknown'}) -> Target set to {book_wpp} words/page!")
+        # NCERT Science Rule (Class 6 to 10): 15 words/page
+        elif any(kw in low_name for kw in ["science", "curiosity"]) and not any(kw in low_name for kw in ["political", "social"]):
             book_wpp = 15
             print(f">> [SPECIALIZED RULE] Science detected ({pdf_name}): Target set to {book_wpp} words/page!")
         is_c7 = "class_07" in low_name or "class 07" in low_name or "class07" in low_name or "class_7" in low_name or "class 7" in low_name or "class7" in low_name

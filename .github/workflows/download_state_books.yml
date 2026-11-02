@@ -1,0 +1,92 @@
+name: State Board Books Downloader & Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      book_id:
+        description: 'BSTBPC Book ID (e.g. 53 for Cl 10 Panorama, 51 for Cl 10 Godhuli, or leave blank to use search)'
+        required: false
+        default: ''
+      class_num:
+        description: 'Class Number (1 to 12)'
+        required: false
+        default: '10'
+      subject:
+        description: 'Subject Filter (e.g. english, hindi, sanskrit, science)'
+        required: false
+        default: ''
+      search:
+        description: 'Search Query (e.g. Panorama, Godhuli, Piyusham, Radiance)'
+        required: false
+        default: ''
+      auto_popular:
+        description: 'Download All Core Popular Books (true/false)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-board-books
+  cancel-in-progress: false
+
+jobs:
+  download_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pymupdf requests pillow
+
+      - name: Run State Board Downloader
+        id: downloader
+        run: |
+          cmd="python -u scripts/state_board_downloader.py"
+          
+          if [ "${{ github.event.inputs.auto_popular }}" = "true" ]; then
+            cmd="$cmd --auto-popular"
+          elif [ -n "${{ github.event.inputs.book_id }}" ]; then
+            cmd="$cmd --book-id ${{ github.event.inputs.book_id }}"
+          else
+            if [ -n "${{ github.event.inputs.class_num }}" ]; then
+              cmd="$cmd --class-num ${{ github.event.inputs.class_num }}"
+            fi
+            if [ -n "${{ github.event.inputs.subject }}" ]; then
+              cmd="$cmd --subject ${{ github.event.inputs.subject }}"
+            fi
+            if [ -n "${{ github.event.inputs.search }}" ]; then
+              cmd="$cmd --search ${{ github.event.inputs.search }}"
+            fi
+          fi
+          
+          echo "Executing: $cmd"
+          eval $cmd
+
+      - name: Commit and Push State Board Textbooks
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add books/state_board/
+          if git diff --staged --quiet; then
+            echo "No new state board textbooks to commit."
+          else
+            git commit -m "feat(state_board): auto-download and sync state board textbook [skip ci]"
+            git rebase --abort || true
+            git pull --rebase origin main
+            git push origin HEAD:main
+            echo "Successfully pushed state board textbook to repository!"
+          fi

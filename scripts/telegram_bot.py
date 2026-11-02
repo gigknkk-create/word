@@ -182,14 +182,67 @@ def get_dynamic_menu():
 
     # General Action Buttons (callback_data <= 15 bytes)
     keyboard.append([
-        {"text": "📊 Live Studio Status", "callback_data": "act:status"},
-        {"text": "📚 View All Remaining", "callback_data": "act:rem"}
+        {"text": "📊 Studio Status", "callback_data": "act:status"},
+        {"text": "🏛️ State Board Books", "callback_data": "menu:state"}
     ])
     keyboard.append([
-        {"text": "🌐 Open Web Vocabulary Studio", "url": "https://gigknkk-create.github.io/word/"}
+        {"text": "📚 All Remaining", "callback_data": "act:rem"},
+        {"text": "🌐 Web Studio", "url": "https://gigknkk-create.github.io/word/"}
     ])
 
     return {"inline_keyboard": keyboard}
+
+def get_state_board_menu():
+    """Builds inline menu for Bihar Board (BSTBPC) textbooks."""
+    keyboard = [
+        [
+            {"text": "📖 Cl 10 Panorama (Eng)", "callback_data": "sb:53"},
+            {"text": "📕 Cl 10 Godhuli (Hindi)", "callback_data": "sb:51"}
+        ],
+        [
+            {"text": "🕉️ Cl 10 Piyusham (Sans)", "callback_data": "sb:55"},
+            {"text": "🔬 Cl 10 Vigyan (Sci)", "callback_data": "sb:42"}
+        ],
+        [
+            {"text": "📖 Cl 9 Panorama (Eng)", "callback_data": "sb:13"},
+            {"text": "📕 Cl 9 Godhuli (Hindi)", "callback_data": "sb:16"}
+        ],
+        [
+            {"text": "🕉️ Cl 9 Piyusham (Sans)", "callback_data": "sb:25"},
+            {"text": "🔬 Cl 9 Vigyan (Sci)", "callback_data": "sb:11"}
+        ],
+        [
+            {"text": "🔙 Back to Main Studio", "callback_data": "act:status"}
+        ]
+    ]
+    return {"inline_keyboard": keyboard}
+
+def trigger_state_board_download(book_id: int, chat_id: int):
+    """Downloads official State Board (BSTBPC) textbook in the background and pushes to GitHub."""
+    import threading
+    def _worker():
+        send_message(chat_id, f"⏳ <i>Bihar Board (BSTBPC) Book ID <b>{book_id}</b> download ho raha hai aur GitHub <code>books/state_board/</code> me push kiya ja raha hai...</i>")
+        try:
+            script_path = os.path.join(REPO_DIR, "scripts", "state_board_downloader.py")
+            cmd = [sys.executable, "-u", script_path, "--book-id", str(book_id), "--push"]
+            res = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO_DIR)
+            if res.returncode == 0:
+                success_msg = (
+                    f"🚀 <b>State Board Textbook Uploaded Successfully!</b>\n\n"
+                    f"Book ID <b>{book_id}</b> download hokar <code>books/state_board/</code> me push ho chuki hai.\n\n"
+                    f"⚡ <b>State Board Word Density Rules:</b>\n"
+                    f"  • <b>Class > 6 (Class 7-12):</b> 10 words/page\n"
+                    f"  • <b>Class &lt;= 6 (Class 1-6):</b> 8 words/page\n\n"
+                    f"Workflow sequential queue me lag chuka hai!"
+                )
+                send_message(chat_id, success_msg, reply_markup=get_dynamic_menu())
+            else:
+                err_text = escape_html(res.stderr[:250]) if res.stderr else "Unknown error during download."
+                send_message(chat_id, f"⚠️ Error downloading State Board book {book_id}:\n{err_text}", reply_markup=get_state_board_menu())
+        except Exception as ex:
+            send_message(chat_id, f"⚠️ Execution error: {escape_html(str(ex))}", reply_markup=get_state_board_menu())
+
+    threading.Thread(target=_worker, daemon=True).start()
 
 def push_book_to_github(target_book: dict, words_per_page: int = 18):
     """Pushes the selected book PDF to GitHub books/ folder to auto-trigger the workflow."""
@@ -237,7 +290,12 @@ CURRENT STATUS:
 {pending_list_str}
 
 YOUR CAPABILITIES & INTENTS:
-1. If the user wants to push, upload, start, or generate a book (e.g. "class 9 history push karo", "class 10 history daal do 20 words ke sath", "upload class 9"):
+0. If the user asks for State Board or Bihar Board books (e.g. "bihar board book download karo", "state board dikhao", "bseb class 10 panorama chahiye"):
+   Include this EXACT tag:
+   [ACTION:STATE_BOARD_MENU]
+   Or if specific book ID mentioned: [ACTION:STATE_BOARD:<id>]
+
+1. If the user wants to push, upload, start, or generate an NCERT book (e.g. "class 9 history push karo", "class 10 history daal do 20 words ke sath", "upload class 9"):
    Identify the matching book idx from the pending list and the target words per page (default 18 for history/social, or as specified).
    Include this EXACT tag anywhere in your reply:
    [ACTION:PUSH:<idx>:<words_per_page>]
@@ -345,7 +403,22 @@ def process_updates():
                         print(f"[Button Clicked] by {from_user}: {cb_data}")
                         answer_callback(cb_id, "Processing...")
 
-                        if cb_data in ("act:status", "status"):
+                        if cb_data == "menu:state":
+                            sb_msg = (
+                                f"<b>🏛️ Bihar State Board (BSTBPC) Textbooks</b>\n\n"
+                                f"Aap Bihar Board ki official textbooks directly yahan se download karke <code>books/state_board/</code> me push kar sakte hain!\n\n"
+                                f"🎯 <b>Specialized Word Density Rules:</b>\n"
+                                f"  • <b>Class &gt; 6 (Class 7 to 12):</b> 10 words per page\n"
+                                f"  • <b>Class &lt;= 6 (Class 1 to 6):</b> 8 words per page\n\n"
+                                f"👇 <i>Neeche kisi bhi book par click karke download shuru karein:</i>"
+                            )
+                            send_message(chat_id, sb_msg, reply_markup=get_state_board_menu())
+
+                        elif cb_data.startswith("sb:"):
+                            b_id = int(cb_data.split(":")[1])
+                            trigger_state_board_download(b_id, chat_id)
+
+                        elif cb_data in ("act:status", "status"):
                             status_msg = format_status_report()
                             send_message(chat_id, status_msg, reply_markup=get_dynamic_menu())
 
@@ -399,7 +472,18 @@ def process_updates():
 
                         print(f"[User Message] {text}")
 
-                        if text in ("/start", "/help"):
+                        if text in ("/state_board", "/bseb", "bihar board", "state board"):
+                            sb_msg = (
+                                f"<b>🏛️ Bihar State Board (BSTBPC) Textbooks</b>\n\n"
+                                f"Aap Bihar Board ki official textbooks directly yahan se download karke <code>books/state_board/</code> me push kar sakte hain!\n\n"
+                                f"🎯 <b>Specialized Word Density Rules:</b>\n"
+                                f"  • <b>Class &gt; 6 (Class 7 to 12):</b> 10 words per page\n"
+                                f"  • <b>Class &lt;= 6 (Class 1 to 6):</b> 8 words per page\n\n"
+                                f"👇 <i>Neeche kisi bhi book par click karke download shuru karein:</i>"
+                            )
+                            send_message(chat_id, sb_msg, reply_markup=get_state_board_menu())
+
+                        elif text in ("/start", "/help"):
                             welcome = (
                                 f"👋 <b>Namaste Nitish!</b>\n\n"
                                 f"Antigravity NCERT Vocab AI Controller me aapka swagat hai.\n\n"
@@ -441,6 +525,23 @@ def process_updates():
                                             send_message(chat_id, f"⚠️ {escape_html(res_msg)}", reply_markup=get_dynamic_menu())
                                     else:
                                         send_message(chat_id, f"{escape_html(clean_reply)}\n\n⚠️ Could not find book index in pending list.", reply_markup=get_dynamic_menu())
+
+                                elif "[ACTION:STATE_BOARD_MENU]" in gemini_reply:
+                                    clean_reply = gemini_reply.replace("[ACTION:STATE_BOARD_MENU]", "").strip()
+                                    sb_msg = (
+                                        f"{escape_html(clean_reply)}\n\n"
+                                        f"<b>🏛️ Bihar State Board (BSTBPC) Textbooks</b>\n\n"
+                                        f"🎯 <b>Density Rules:</b> Class &gt; 6: 10 WPP | Class &lt;= 6: 8 WPP"
+                                    )
+                                    send_message(chat_id, sb_msg, reply_markup=get_state_board_menu())
+
+                                elif "[ACTION:STATE_BOARD:" in gemini_reply:
+                                    sb_m = re.search(r"\[ACTION:STATE_BOARD:(\d+)\]", gemini_reply)
+                                    if sb_m:
+                                        target_sb_id = int(sb_m.group(1))
+                                        trigger_state_board_download(target_sb_id, chat_id)
+                                    else:
+                                        send_message(chat_id, escape_html(gemini_reply), reply_markup=get_state_board_menu())
 
                                 elif "[ACTION:STATUS]" in gemini_reply:
                                     clean_reply = gemini_reply.replace("[ACTION:STATUS]", "").strip()
