@@ -84,10 +84,10 @@ def main():
             else:
                 book_wpp = 10
             print(f">> [STATE BOARD SPECIALIZED RULE] State Board book detected: '{pdf_name}' (Class {cnum or 'Unknown'}) -> Target set to {book_wpp} words/page!")
-        # NCERT Science Rule (Class 6 to 10): 15 words/page
-        elif any(kw in low_name for kw in ["science", "curiosity"]) and not any(kw in low_name for kw in ["political", "social"]):
+        # NCERT Science Rule (Class 6 to 12: General Science, Physics, Chemistry, Biology): 15 words/page
+        elif any(kw in low_name for kw in ["science", "curiosity", "physics", "chemistry", "biology", "bhautiki", "rasayan", "jeev_vigyan"]) and not any(kw in low_name for kw in ["political", "social"]):
             book_wpp = 15
-            print(f">> [SPECIALIZED RULE] Science detected ({pdf_name}): Target set to {book_wpp} words/page!")
+            print(f">> [SPECIALIZED RULE] Science / Physics / Chemistry / Biology detected ({pdf_name}): Target set to {book_wpp} words/page!")
         is_c7 = "class_07" in low_name or "class 07" in low_name or "class07" in low_name or "class_7" in low_name or "class 7" in low_name or "class7" in low_name
         is_c8 = "class_08" in low_name or "class 08" in low_name or "class08" in low_name or "class_8" in low_name or "class 8" in low_name or "class8" in low_name
         is_c9 = "class_09" in low_name or "class 09" in low_name or "class09" in low_name or "class_9" in low_name or "class 9" in low_name or "class9" in low_name
