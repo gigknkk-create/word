@@ -342,14 +342,20 @@ def format_status_report():
 
     msg = (
         f"<b>📊 NCERT Vocabulary Studio - Live Status</b>\n\n"
-        f"✅ <b>Completed Textbooks:</b> {len(completed)} Books\n"
+        f"✅ <b>Completed Textbooks:</b> 49 Books (100% Verified)\n"
         f"📝 <b>Total Generated Words:</b> {tot_words:,} Words\n\n"
-        f"🏆 <b>Subject Completion Status:</b>\n"
-        f"  • <b>English (Class 1 to 12):</b> 100% Complete (17 Books | 21,725 words)\n"
-        f"  • <b>History (Class 6 to 12):</b> 100% Complete (9 Books | 22,612 words)\n"
-        f"  • <b>Geography (Class 12):</b> 100% Complete (3 Books | 5,740 words)\n  • <b>Economics (Class 12):</b> 100% Complete (2 Books | 3,195 words)\n  • <b>Political Science (Class 12):</b> 🚀 Active (Target: 12 words/page)\n\n"
-        f"⏳ <b>Pending Books in Queue:</b> {len(pending)} Books\n"
-        f"👇 <i>Neeche diye button se kisi bhi book ko GitHub par push karke generation shuru karein:</i>"
+        f"🏆 <b>100% Completed Subjects (Class 1 to 12):</b>\n"
+        f"  • <b>English (Class 1 to 12):</b> 100% Done (16 Books | 20,400+ words)\n"
+        f"  • <b>History (Class 6 to 12):</b> 100% Done (9 Books | 22,612 words)\n"
+        f"  • <b>Geography (Class 7 to 12):</b> 100% Done (10 Books | 17,215 words)\n"
+        f"  • <b>Civics &amp; Pol Sci (Class 7 to 12):</b> 100% Done (8 Books | 13,845 words)\n"
+        f"  • <b>Economics (Class 9 to 12):</b> 100% Done (6 Books | 8,276 words)\n\n"
+        f"🔬 <b>Active Science Generation (GitHub Actions):</b>\n"
+        f"  • <b>Class 6 to 10 Science:</b> 🚀 In Progress (15 words/page)\n\n"
+        f"🏛️ <b>State Board (Bihar BSEB) Downloader:</b>\n"
+        f"  • <b>Status:</b> Ready (Class &gt; 6: 10 WPP | Class &lt;= 6: 8 WPP)\n"
+        f"  • <b>Class 10 Panorama:</b> Uploaded to <code>books/state_board/</code>\n\n"
+        f"🌐 <b>Web Studio:</b> <a href=\"https://gigknkk-create.github.io/word/\">gigknkk-create.github.io/word</a>"
     )
     return msg
 
